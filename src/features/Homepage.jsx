@@ -1,3 +1,5 @@
+import SimpleSlider from "../components/Slider";
+
 function Homepage() {
   return (
     <div className="my-10 px-4 text-center sm:my-16">
@@ -6,6 +8,9 @@ function Homepage() {
         <br />
         <span className="text-yellow-500">
           Straight out of the oven, straight to you.
+        </span>
+        <span>
+          <SimpleSlider />
         </span>
       </h1>
     </div>
