@@ -16,11 +16,12 @@ function SimpleSlider() {
   };
   const images = [1, 2, 3, 4, 5, 6, 7];
   return (
-    <div className="max-w-6xl mx-auto bg-white p-4">
+    <div className=" bg-white p-4">
       <Slider {...settings}>
         {images.map((id) => (
           <div key={id}>
             <img
+              className="rounded-lg"
               src={`/imgs/${id}.png`}
               alt={`Slide ${id}`}
               style={{ width: "100%" }}

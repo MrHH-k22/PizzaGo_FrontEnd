@@ -1,18 +1,24 @@
+import { useState } from "react";
 import SimpleSlider from "../components/Slider";
+import Menu from "./Menu/Menu";
+import PizzaModal from "./PizzaModal/PizzaModal";
 
 function Homepage() {
+  const [isOpenModal, setIsOpenModal] = useState(false);
+
+  function toggleModal() {
+    setIsOpenModal((prev) => !prev);
+  }
+
   return (
-    <div className="my-10 px-4 text-center sm:my-16">
-      <h1 className="mb-8 text-xl font-semibold md:text-3xl">
-        The best pizza.
-        <br />
-        <span className="text-yellow-500">
-          Straight out of the oven, straight to you.
-        </span>
-        <span>
-          <SimpleSlider />
-        </span>
-      </h1>
+    <div className="px-4 text-center max-w-7xl mx-auto mb-10">
+      {isOpenModal && <PizzaModal toggleModal={toggleModal} />}
+      <div className="mb-16">
+        <SimpleSlider />
+      </div>
+      <div>
+        <Menu toggleModal={toggleModal} />
+      </div>
     </div>
   );
 }
