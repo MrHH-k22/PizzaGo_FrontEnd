@@ -1,9 +1,21 @@
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AppLayout from "./layouts/AppLayout";
+import Homepage from "./features/Homepage";
+
+const router = createBrowserRouter([
+  {
+    element: <AppLayout />,
+    children: [
+      {
+        path: "/",
+        element: <Homepage />,
+      },
+    ],
+  },
+]);
+
 function App() {
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-blue-100">
-      <h1 className="text-3xl font-bold text-blue-600">Hello Tailwind!</h1>
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
