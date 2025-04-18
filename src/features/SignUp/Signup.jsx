@@ -9,6 +9,7 @@ function SignUp() {
     fullname: "",
     email: "",
     password: "",
+    confirmPassword: "",
     address: "",
   });
 
@@ -22,13 +23,17 @@ function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    if (formData.password !== formData.confirmPassword) {
+      alert("Mật khẩu không khớp!");
+      return;
+    }
+    // Rest of your submission logic
     console.log("Form Data:", formData);
     alert("Sign up submitted! (Check console)");
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-50 p-4 md:p-8 font-sans">
+    <div className="flex flex-col items-center min-h-screen p-4 md:p-8 font-sans">
       {/* Container to control max-width and relative positioning for back button */}
       <div className="w-full max-w-lg relative mb-6">
         {" "}
@@ -39,11 +44,11 @@ function SignUp() {
           onClick={() => window.history.back()} // Example back navigation
           className="absolute top-0 left-0 mt-1 flex items-center text-sm text-gray-600 hover:text-gray-800"
         >
-          <FaArrowLeft className="mr-2" /> Trở lại
+          <FaArrowLeft className="mr-2" /> Back
         </button>
         {/* Title */}
         <h1 className="text-2xl md:text-3xl font-bold text-center text-gray-900 pt-8">
-          Tạo tài khoản
+          Sign Up
         </h1>
       </div>
 
@@ -68,7 +73,7 @@ function SignUp() {
               name="fullname"
               value={formData.fullname}
               onChange={handleChange}
-              placeholder="Nhập tên của bạn"
+              placeholder="Input your full name"
               required
               className="w-full border border-gray-300 rounded-md py-2.5 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out"
               autoComplete="name"
@@ -89,7 +94,7 @@ function SignUp() {
               name="email"
               value={formData.email}
               onChange={handleChange}
-              placeholder="Nhập địa chỉ email của bạn"
+              placeholder="Input your email"
               required
               className="w-full border border-gray-300 rounded-md py-2.5 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out"
               autoComplete="email"
@@ -102,7 +107,7 @@ function SignUp() {
               htmlFor="password"
               className="block text-sm font-semibold text-gray-800 mb-1.5"
             >
-              Mật khẩu <span className="text-red-500">*</span>
+              Password <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <input
@@ -111,7 +116,7 @@ function SignUp() {
                 name="password"
                 value={formData.password}
                 onChange={handleChange}
-                placeholder="Vui lòng nhập mật khẩu của bạn"
+                placeholder="Input your password"
                 required
                 className="w-full border border-gray-300 rounded-md py-2.5 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out pr-10" // Space for icon
                 autoComplete="new-password"
@@ -134,6 +139,41 @@ function SignUp() {
             {/* <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters long.</p> */}
           </div>
 
+          {/* Confirm Password Input */}
+          <div className="mb-5">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-semibold text-gray-800 mb-1.5"
+            >
+              Confirm Password <span className="text-red-500">*</span>
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                id="confirmPassword"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                placeholder="Re-enter your password"
+                required
+                className="w-full border border-gray-300 rounded-md py-2.5 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out pr-10"
+                autoComplete="new-password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 cursor-pointer"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="w-5 h-5" />
+                ) : (
+                  <FaEye className="w-5 h-5" />
+                )}
+              </button>
+            </div>
+          </div>
+
           {/* Address Input (Optional) */}
           <div className="mb-6">
             {" "}
@@ -142,7 +182,7 @@ function SignUp() {
               htmlFor="address"
               className="block text-sm font-semibold text-gray-800 mb-1.5"
             >
-              Địa chỉ <span className="text-gray-500 text-xs">(Tùy chọn)</span>
+              Address <span className="text-gray-500 text-xs">(Optional)</span>
             </label>
             <textarea
               id="address"
@@ -150,7 +190,7 @@ function SignUp() {
               rows="3"
               value={formData.address}
               onChange={handleChange}
-              placeholder="Nhập địa chỉ của bạn"
+              placeholder="Enter your address (optional)"
               className="w-full border border-gray-300 rounded-md py-2.5 px-4 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out"
               autoComplete="street-address"
             ></textarea>
@@ -169,12 +209,12 @@ function SignUp() {
         </form>
         {/* Login Link */}
         <div className="mt-6 text-center text-sm text-gray-600">
-          Đã có tài khoản?{" "}
+          Already have an account?{" "}
           <a
             href="#" // Link to your login page
             className="font-medium text-red-600 hover:text-red-700 hover:underline"
           >
-            Đăng nhập
+            Log in
           </a>
         </div>
       </div>
