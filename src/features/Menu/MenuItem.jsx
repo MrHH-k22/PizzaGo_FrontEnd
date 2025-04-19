@@ -2,7 +2,7 @@ import { FaCirclePlus } from "react-icons/fa6";
 
 function MenuItem({ toggleModal }) {
   return (
-    <div className="group flex rounded-lg border border-gray-300 bg-white overflow-hidden w-full transition-shadow duration-300 hover:shadow-lg">
+    <div className="group flex rounded-lg border border-gray-300 bg-white overflow-hidden w-full transition-shadow duration-300 hover:shadow-xl">
       {/* Phần hình ảnh bên trái */}
       <div className="w-1/3 p-3">
         <div className="relative h-full w-full overflow-hidden rounded-lg">

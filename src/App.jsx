@@ -3,6 +3,7 @@ import AppLayout from "./layouts/AppLayout";
 import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
 import SignUp from "./features/SignUp/Signup";
+import Cart from "./features/Cart/Cart";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp />,
+      },
+      {
+        path: "/cart",
+        element: <Cart />,
       },
     ],
   },

@@ -1,11 +1,13 @@
 import { FaCartShopping } from "react-icons/fa6";
-import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { useState } from "react";
 import DropDownLink from "./DropDownLink";
 
 const servicesAndProducts = [
+  { name: "Log in", link: "/login" },
+  { name: "Sign up", link: "/signup" },
+  { name: "hr", link: "/" },
   { name: "Order Tracking", link: "/" },
   { name: "Account", link: "/" },
   { name: "Sign out", link: "/" },
@@ -16,7 +18,7 @@ function Header() {
 
   return (
     <header className="relative rounded-b-3xl mx-auto w-full max-w-screen-xl flex items-center justify-between px-12 py-14 bg-white shadow-sm h-24 ">
-      {/* Delivery Address Section */}
+      {/* Name Section */}
       <div className="flex flex-col text-xl text-gray-700">
         <span className="">Hello, Nguyễn Mai Huy Hoàng</span>
       </div>
@@ -32,10 +34,13 @@ function Header() {
 
       {/* Action Buttons Section */}
       <div className="flex items-center gap-6 text-xl">
-        <button className="flex items-center justify-center gap-2 py-3 px-6 border-2 border-red-600 bg-red-600 text-white rounded-full text-base">
+        <Link
+          to="/cart"
+          className="flex items-center justify-center gap-2 py-3 px-6 border-2 border-red-600 bg-red-600 text-white rounded-full text-base hover:bg-white hover:text-red-600 transition duration-300 ease-in-out"
+        >
           <span className="font-semibold">1</span>
           <FaCartShopping size={18} />
-        </button>
+        </Link>
 
         {/* <FiMenu /> */}
         <DropDownLink
