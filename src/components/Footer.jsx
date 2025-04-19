@@ -2,9 +2,9 @@ import BackToTopButton from "./BackToTopButton";
 
 function Footer() {
   return (
-    <footer className="bg-gray-100 py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="py-12  mx-auto w-full max-w-screen-xl">
+      <div className="container mx-auto">
+        <div className="bg-gray-100 grid grid-cols-1 md:grid-cols-3 gap-20 p-12 rounded-4xl">
           {/* Logo Section */}
           <div className="flex flex-col items-center md:items-center">
             <div className="flex justify-center mb-4">
@@ -29,7 +29,7 @@ function Footer() {
           {/* Team Members Section */}
           <div className="text-center md:text-left px-4">
             <h3 className="text-lg font-semibold mb-4 text-gray-800">
-              Thành viên nhóm
+              Group members
             </h3>
             <ul className="space-y-2 text-gray-600">
               <li>Nguyễn Mai Huy Hoàng</li>
@@ -41,7 +41,7 @@ function Footer() {
         </div>
 
         {/* Copyright Section */}
-        <div className="border-t border-gray-200 mt-8 pt-6 text-center text-gray-600">
+        <div className="  border-t border-gray-200 mt-8 pt-6 text-center text-gray-600">
           <p className="text-sm">
             &copy; {new Date().getFullYear()} Pizza GO. Tất cả quyền được bảo
             lưu.

@@ -46,16 +46,23 @@ function DropDownLink({ title, items, tabOpen, setTabOpen, icon = null }) {
           }
         `}
       >
-        {items.map((item) => (
-          <Link
-            key={item.name}
-            to={item.link}
-            onClick={handleLinkClick}
-            className="block px-6 py-3 text-base text-gray-700 hover:bg-gray-100"
-          >
-            {item.name}
-          </Link>
-        ))}
+        {items.map((item, index) =>
+          item.name === "hr" ? (
+            <div
+              key={`divider-${index}`}
+              className="my-2 border-t border-gray-300"
+            />
+          ) : (
+            <Link
+              key={`link-${index}`}
+              to={item.link || "#"}
+              onClick={handleLinkClick}
+              className="block px-6 py-3 text-base text-gray-700 hover:text-red-600 hover:font-semibold"
+            >
+              {item.name}
+            </Link>
+          )
+        )}
       </div>
     </div>
   );
