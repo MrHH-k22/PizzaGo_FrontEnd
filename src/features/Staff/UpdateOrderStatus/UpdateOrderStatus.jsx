@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+
+import OrderDetailsModal from "./OrderDetailsModal";
+
 // Optional: Import CSS for styling
-import "./UpdateOrderStatus.css"; // Create this file for styling
+import "./UpdateOrderStatus.css";
 
 // --- Mock Data (Replace with API call) ---
 // Simulates the kind of data you might get from your backend API
@@ -9,10 +12,32 @@ const mockOrders = [
     id: "ORD1001",
     customerName: "Nguyễn Văn A",
     deliveryAddress: "123 Đường ABC, Quận 1, TP. HCM",
-    status: "Confirmed", // e.g., Pending, Preparing, Delivering, Delivered, Cancelled
+    status: "Preparing",
     itemCount: 3,
-    totalBill: 250000, // Assuming VND or your currency
-    // You might also include details like phone number, order items list, timestamp etc.
+    totalBill: 250000,
+    items: [
+      {
+        id: "PZ001",
+        name: "Pizza Hải Sản Pesto Xanh",
+        quantity: 1,
+        unitPrice: 149000,
+        imageUrl: "/images/pizza-pesto.jpg",
+      }, // Add actual image paths
+      {
+        id: "SD002",
+        name: "Khoai tây chiên",
+        quantity: 1,
+        unitPrice: 35000,
+        imageUrl: "/images/fries.jpg",
+      },
+      {
+        id: "DR001",
+        name: "Coca-Cola Lon",
+        quantity: 1,
+        unitPrice: 15000,
+        imageUrl: "/images/coke.jpg",
+      },
+    ],
   },
   {
     id: "ORD1002",
@@ -21,22 +46,64 @@ const mockOrders = [
     status: "Pending",
     itemCount: 2,
     totalBill: 180000,
+    items: [
+      {
+        id: "PZ005",
+        name: "Pizza Bò Băm",
+        quantity: 1,
+        unitPrice: 125000,
+        imageUrl: "/images/pizza-beef.jpg",
+      },
+      {
+        id: "SD005",
+        name: "Salad Trộn Dầu Giấm",
+        quantity: 1,
+        unitPrice: 55000,
+        imageUrl: "/images/salad.jpg",
+      },
+    ],
   },
   {
     id: "ORD1003",
     customerName: "Lê Hoàng C",
     deliveryAddress: "789 Chung cư Z, Quận 7, TP. HCM",
     status: "Delivering",
-    itemCount: 5,
-    totalBill: 420000,
+    itemCount: 5, // Example has 2 items, adjust if needed
+    totalBill: 420000, // Example has 2 items, adjust if needed
+    items: [
+      {
+        id: "PZ001",
+        name: "Pizza Hải Sản Pesto Xanh",
+        quantity: 2,
+        unitPrice: 149000,
+        imageUrl: "/images/pizza-pesto.jpg",
+      },
+      {
+        id: "PZ003",
+        name: "Pizza Gà Nướng Nấm",
+        quantity: 1,
+        unitPrice: 135000,
+        imageUrl: "/images/pizza-chicken-mushroom.jpg",
+      },
+      // Add more items if itemCount is 5
+    ],
   },
   {
     id: "ORD1004",
     customerName: "Phạm Minh D",
-    deliveryAddress: "Pick up at store", // Example for pickup
+    deliveryAddress: "Pick up at store",
     status: "Ready for Pickup",
     itemCount: 1,
     totalBill: 99000,
+    items: [
+      {
+        id: "PZ007",
+        name: "Pizza Phô Mai",
+        quantity: 1,
+        unitPrice: 99000,
+        imageUrl: "/images/pizza-cheese.jpg",
+      },
+    ],
   },
 ];
 // --- End Mock Data ---
@@ -45,50 +112,59 @@ function UpdateOrderStatus() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false); // <-- State for modal visibility
+  const [selectedOrder, setSelectedOrder] = useState(null); // <-- State for selected order data
 
   useEffect(() => {
-    // --- Simulate API Call ---
+    // ... (fetchOrders function remains the same)
     const fetchOrders = async () => {
       setLoading(true);
-      setError(null); // Reset error state
+      setError(null);
       try {
-        // TODO: Replace this setTimeout with your actual API fetch call
-        // Example: const response = await fetch('/api/staff/orders?status=pending,preparing,delivering');
-        // if (!response.ok) throw new Error('Failed to fetch orders');
-        // const data = await response.json();
-        // setOrders(data);
-
-        // Simulating network delay
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        setOrders(mockOrders); // Using mock data for now
+        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate fetch
+        // Add default imageUrl if missing in mock data for safety
+        const ordersWithImages = mockOrders.map((order) => ({
+          ...order,
+          items: order.items.map((item) => ({
+            ...item,
+            imageUrl: item.imageUrl || "/images/placeholder.png",
+          })),
+        }));
+        setOrders(ordersWithImages);
       } catch (err) {
         console.error("Error fetching orders:", err);
         setError(err.message || "Could not fetch orders. Please try again.");
-        setOrders([]); // Clear orders on error
+        setOrders([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchOrders();
-  }, []); // Empty dependency array means this runs once when the component mounts
+  }, []);
 
+  // --- Modal Handling ---
   const handleViewDetails = (orderId) => {
-    // TODO: Implement logic to show order details
-    // This could navigate to a new page, open a modal, etc.
-    console.log(`Viewing details for Order ID: ${orderId}`);
-    alert(`Implement details view for Order ID: ${orderId}`);
-    // Example navigation (if using react-router-dom):
-    // navigate(`/staff/orders/${orderId}`);
+    const orderToShow = orders.find((order) => order.id === orderId);
+    if (orderToShow) {
+      setSelectedOrder(orderToShow);
+      setIsModalOpen(true);
+    } else {
+      console.error("Could not find order details for ID:", orderId);
+      // Optionally show an error message to the user
+    }
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedOrder(null); // Clear selected order when closing
+  };
+  // --- End Modal Handling ---
+
   const handleStatusChange = (orderId, newStatus) => {
-    // TODO: Implement API call to update the status on the backend
+    // ... (status change logic remains the same)
     console.log(`Updating status for Order ID: ${orderId} to ${newStatus}`);
     alert(`Implement status update for Order ID: ${orderId} to ${newStatus}`);
-
-    // Optimistic UI Update (optional): Update local state immediately
-    // Be sure to handle potential errors from the API call
     setOrders((prevOrders) =>
       prevOrders.map((order) =>
         order.id === orderId ? { ...order, status: newStatus } : order
@@ -98,12 +174,14 @@ function UpdateOrderStatus() {
 
   // --- Render Logic ---
   if (loading) {
+    // ... loading state ...
     return (
       <div className="order-status-container loading">Loading orders...</div>
     );
   }
 
   if (error) {
+    // ... error state ...
     return <div className="order-status-container error">Error: {error}</div>;
   }
 
@@ -115,6 +193,7 @@ function UpdateOrderStatus() {
         <p>No active orders found.</p>
       ) : (
         <table className="orders-table">
+          {/* ... (thead remains the same) ... */}
           <thead>
             <tr>
               <th>Order ID</th>
@@ -129,43 +208,49 @@ function UpdateOrderStatus() {
           <tbody>
             {orders.map((order) => (
               <tr key={order.id}>
+                {/* ... (other tds remain the same) ... */}
                 <td>{order.id}</td>
                 <td>{order.customerName}</td>
                 <td>{order.deliveryAddress}</td>
                 <td>
-                  {/* Example: Make status editable with a dropdown */}
                   <select
                     value={order.status}
                     onChange={(e) =>
                       handleStatusChange(order.id, e.target.value)
                     }
-                    className={`status-select status-${order.status.toLowerCase().replace(/\s+/g, "-")}`}
+                    className={`status-select status-${order.status.toLowerCase().replace(" ", "-")}`}
                   >
+                    {/* ... options ... */}
                     <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Delivering">Delivering</option>
+                    <option value="Preparing">Preparing</option>
                     <option value="Ready for Pickup">Ready for Pickup</option>
-                    <option value="Completed">Completed</option>
+                    <option value="Delivering">Delivering</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
                   </select>
                 </td>
                 <td className="center-text">{order.itemCount}</td>
                 <td className="right-text">
-                  {order.totalBill.toLocaleString("vi-VN")}{" "}
-                  {/* Format currency */}
+                  {order.totalBill.toLocaleString("vi-VN")}
                 </td>
                 <td>
+                  {/* Button now calls handleViewDetails */}
                   <button
                     className="details-button"
-                    onClick={() => handleViewDetails(order.id)}
+                    onClick={() => handleViewDetails(order.id)} // <-- Updated onClick
                   >
                     Details
                   </button>
-                  {/* You might add other actions here, like "Print Bill" */}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+
+      {/* Render the Modal Conditionally */}
+      {isModalOpen && (
+        <OrderDetailsModal order={selectedOrder} onClose={closeModal} />
       )}
     </div>
   );
