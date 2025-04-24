@@ -57,7 +57,7 @@ function OrderDetailsModal({ order, onClose }) {
           <p>
             <strong>Status:</strong>{" "}
             <span
-              className={`status-badge status-${order.status.toLowerCase().replace(" ", "-")}`}
+              className={`status-badge status-${order.status.toLowerCase().replace(/ /g, "-")}`}
             >
               {order.status}
             </span>

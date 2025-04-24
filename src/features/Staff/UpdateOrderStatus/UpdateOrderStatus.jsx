@@ -12,7 +12,7 @@ const mockOrders = [
     id: "ORD1001",
     customerName: "Nguyễn Văn A",
     deliveryAddress: "123 Đường ABC, Quận 1, TP. HCM",
-    status: "Preparing",
+    status: "Confirmed",
     itemCount: 3,
     totalBill: 250000,
     items: [
@@ -21,7 +21,7 @@ const mockOrders = [
         name: "Pizza Hải Sản Pesto Xanh",
         quantity: 1,
         unitPrice: 149000,
-        imageUrl: "/images/pizza-pesto.jpg",
+        imageUrl: "/images/ExamplePizza.png",
       }, // Add actual image paths
       {
         id: "SD002",
@@ -218,14 +218,14 @@ function UpdateOrderStatus() {
                     onChange={(e) =>
                       handleStatusChange(order.id, e.target.value)
                     }
-                    className={`status-select status-${order.status.toLowerCase().replace(" ", "-")}`}
+                    className={`status-select status-${order.status.toLowerCase().replace(/ /g, "-")}`}
                   >
                     {/* ... options ... */}
                     <option value="Pending">Pending</option>
-                    <option value="Preparing">Preparing</option>
+                    <option value="Confirmed">Confirmed</option>
                     <option value="Ready for Pickup">Ready for Pickup</option>
                     <option value="Delivering">Delivering</option>
-                    <option value="Delivered">Delivered</option>
+                    <option value="Completed">Completed</option>
                     <option value="Cancelled">Cancelled</option>
                   </select>
                 </td>
