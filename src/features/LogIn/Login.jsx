@@ -6,11 +6,17 @@ import {
   FaEye,
   FaEyeSlash,
   FaArrowLeft,
+  FaUserCircle,
 } from "react-icons/fa";
 import Logo_PizzaGo from "../../../public/Logo_PizzaGo.png"; // Adjust the path as necessary
 
 function LogIn() {
   const [showPassword, setShowPassword] = useState(false);
+  const [userRole, setUserRole] = useState("customer");
+
+  const handleRoleChange = (e) => {
+    setUserRole(e.target.value);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-4 font-sans">
@@ -73,6 +79,48 @@ function LogIn() {
         {/* Form Section */}
         <div className="bg-white p-6 md:p-8">
           <form>
+            {/* Role Selector */}
+            <div className="mb-4">
+              <label
+                htmlFor="role"
+                className="block text-sm font-bold text-gray-800 mb-1"
+              >
+                Login as
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-gray-500">
+                  <FaUserCircle />
+                </div>
+                <select
+                  id="role"
+                  name="role"
+                  value={userRole}
+                  onChange={handleRoleChange}
+                  className="w-full border border-gray-300 rounded-md py-2.5 pl-10 pr-4 text-gray-700 appearance-none focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out bg-white"
+                >
+                  <option value="customer">Customer</option>
+                  <option value="staff">Staff</option>
+                  <option value="manager">Manager</option>
+                </select>
+                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
             {/* Email Input */}
             <div className="mb-4">
               <label
