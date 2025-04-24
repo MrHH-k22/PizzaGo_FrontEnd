@@ -1,9 +1,15 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import AppLayout from "./layouts/AppLayout";
+
 import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
 import SignUp from "./features/SignUp/Signup";
 import Cart from "./features/Cart/Cart";
+
+import StaffLayout from "./layouts/StaffLayout";
+
+import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +30,16 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+    ],
+  },
+  {
+    path: "/staff",
+    element: <StaffLayout />,
+    children: [
+      {
+        path: "updateorderstatus",
+        element: <UpdateOrderStatus />,
       },
     ],
   },
