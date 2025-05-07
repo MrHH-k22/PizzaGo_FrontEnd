@@ -8,7 +8,7 @@ import {
   FaArrowLeft,
   FaUserCircle,
 } from "react-icons/fa";
-import Logo_PizzaGo from "../../../public/imgs/Logo.png"; // Adjust the path as necessary
+import Logo_PizzaGo from "/imgs/Logo.png";
 
 function LogIn() {
   const [showPassword, setShowPassword] = useState(false);
