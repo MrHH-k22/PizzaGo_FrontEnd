@@ -97,6 +97,9 @@
 .status-select.status-completed {
   border-left: 4px solid green;
 }
+.status-select.status-cancelled {
+  border-left: 4px solid red;
+}
 .status-select.status-ready-for-pickup {
   border-left: 4px solid #17a2b8; /* Teal */
 }
