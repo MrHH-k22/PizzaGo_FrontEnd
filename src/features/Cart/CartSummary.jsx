@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import CustomButton from "../../components/CustomButton";
 
 function CartSummary() {
   return (
@@ -31,16 +32,7 @@ function CartSummary() {
           </div>
         </div>
       </div>
-      <div className="w-full">
-        <Link
-          to="/"
-          className="py-[12px] px-[24px] inline-flex items-center justify-center rounded-lg gap-[10px] bg-red-600 border-2 border-red-600 text-white disabled:bg-gray-300 disabled:pointer-events-none w-full hover:bg-white hover:text-red-600 transition duration-300 ease-in-out "
-        >
-          <span className="inlne text-center text-base font-medium">
-            Check out
-          </span>
-        </Link>
-      </div>
+      <CustomButton text="Check out" width="full" to="/checkout" />
     </div>
   );
 }

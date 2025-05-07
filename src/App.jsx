@@ -10,6 +10,7 @@ import Cart from "./features/Cart/Cart";
 import StaffLayout from "./layouts/StaffLayout";
 
 import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
+import Checkout from "./features/Checkout/Checkout";
 
 import ManageAccounts from "./features/Manager/ManageAccounts/ManageAccounts";
 
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart />,
+      },
+      {
+        path: "/checkout",
+        element: <Checkout />,
       },
     ],
   },
