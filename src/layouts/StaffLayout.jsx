@@ -4,19 +4,16 @@ import SideBar from "../components/SideBar";
 
 function StaffLayout({ menuItems }) {
   return (
-    <div className="grid h-screen grid-rows-[auto_1fr_auto] mx-auto">
-      <img
-        src="/imgs/Logo.png"
-        alt="Pizza Go Logo"
-        className="h-24 object-contain"
-      />
-      <SideBar menuItems={menuItems}>
-        <div className="flex-1">
+    <div className="grid h-screen grid-cols-[250px_1fr] mx-auto">
+      <SideBar menuItems={menuItems} className="h-full" />
+      <div className="flex flex-col h-full">
+        
+        <div className="flex-1 overflow-auto">
           <main className="mx-auto max-w-7xl">
             <Outlet />
           </main>
         </div>
-      </SideBar>
+      </div>
     </div>
   );
 }
