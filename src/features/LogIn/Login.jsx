@@ -7,7 +7,7 @@ import {
   FaEyeSlash,
   FaArrowLeft,
 } from "react-icons/fa";
-import Logo_PizzaGo from "../../../public/Logo_PizzaGo.png"; // Adjust the path as necessary
+import Logo_PizzaGo from "../../../public/imgs/Logo.png"; // Adjust the path as necessary
 
 function LogIn() {
   const [showPassword, setShowPassword] = useState(false);
