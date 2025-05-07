@@ -11,6 +11,54 @@ import StaffLayout from "./layouts/StaffLayout";
 
 import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
 
+import ManageAccounts from "./features/Manager/ManageAccounts/ManageAccounts";
+
+const staffMenuItems = [
+  {
+    href: "/staff/updateorderstatus",
+    label: "Update Order Status",
+    icon: {
+      viewBox: "0 0 22 21",
+      path: "M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z",
+    },
+  },
+  {
+    href: "/",
+    label: "Log Out",
+    icon: {
+      viewBox: "0 0 18 18",
+      path: "M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Z",
+    },
+  },
+];
+
+const managerMenuItems = [
+  {
+    href: "/manager/manageaccounts",
+    label: "Manage Accounts",
+    icon: {
+      viewBox: "0 0 22 21",
+      path: "M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z",
+    },
+  },
+  {
+    href: "/manager/managefoodmenu",
+    label: "Manage Food Menu",
+    icon: {
+      viewBox: "0 0 18 18",
+      path: "M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Z",
+    },
+  },
+  {
+    href: "/",
+    label: "Log Out",
+    icon: {
+      viewBox: "0 0 18 18",
+      path: "M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Z",
+    },
+  },
+];
+
 const router = createBrowserRouter([
   {
     element: <AppLayout />,
@@ -35,11 +83,21 @@ const router = createBrowserRouter([
   },
   {
     path: "/staff",
-    element: <StaffLayout />,
+    element: <StaffLayout menuItems={staffMenuItems} />,
     children: [
       {
         path: "updateorderstatus",
         element: <UpdateOrderStatus />,
+      },
+    ],
+  },
+  {
+    path: "/manager",
+    element: <StaffLayout menuItems={managerMenuItems} />,
+    children: [
+      {
+        path: "manageaccounts",
+        element: <ManageAccounts />,
       },
     ],
   },

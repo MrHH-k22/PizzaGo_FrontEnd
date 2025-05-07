@@ -1,0 +1,90 @@
+.manage-accounts-container {
+  padding: 20px;
+  font-family: sans-serif;
+}
+
+.manage-accounts-container .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.manage-accounts-container .header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.add-button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.add-button:hover {
+  background-color: #218838;
+}
+
+.accounts-table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.accounts-table th,
+.accounts-table td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.accounts-table th {
+  background-color: #f8f8f8;
+  font-weight: bold;
+  color: #555;
+}
+
+.accounts-table tbody tr:nth-child(even) {
+  background-color: #fdfdfd;
+}
+
+.accounts-table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+
+.edit-button:hover {
+  background-color: #0056b3;
+}
+
+.delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.8em;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
+}

@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-
 import OrderDetailsModal from "./OrderDetailsModal";
-
-// Optional: Import CSS for styling
 import "./UpdateOrderStatus.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+  faSort,
+  faInfoCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 // --- Mock Data (Replace with API call) ---
 // Simulates the kind of data you might get from your backend API
@@ -112,115 +115,129 @@ function UpdateOrderStatus() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // <-- State for modal visibility
-  const [selectedOrder, setSelectedOrder] = useState(null); // <-- State for selected order data
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortField, setSortField] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc");
 
   useEffect(() => {
-    // ... (fetchOrders function remains the same)
     const fetchOrders = async () => {
       setLoading(true);
       setError(null);
       try {
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate fetch
-        // Add default imageUrl if missing in mock data for safety
-        const ordersWithImages = mockOrders.map((order) => ({
-          ...order,
-          items: order.items.map((item) => ({
-            ...item,
-            imageUrl: item.imageUrl || "/images/placeholder.png",
-          })),
-        }));
-        setOrders(ordersWithImages);
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        setOrders(mockOrders);
       } catch (err) {
-        console.error("Error fetching orders:", err);
         setError(err.message || "Could not fetch orders. Please try again.");
         setOrders([]);
       } finally {
         setLoading(false);
       }
     };
-
     fetchOrders();
   }, []);
 
-  // --- Modal Handling ---
   const handleViewDetails = (orderId) => {
     const orderToShow = orders.find((order) => order.id === orderId);
     if (orderToShow) {
       setSelectedOrder(orderToShow);
       setIsModalOpen(true);
-    } else {
-      console.error("Could not find order details for ID:", orderId);
-      // Optionally show an error message to the user
     }
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setSelectedOrder(null); // Clear selected order when closing
+    setSelectedOrder(null);
   };
-  // --- End Modal Handling ---
 
-  const handleStatusChange = (orderId, newStatus) => {
-    // ... (status change logic remains the same)
-    console.log(`Updating status for Order ID: ${orderId} to ${newStatus}`);
-    alert(`Implement status update for Order ID: ${orderId} to ${newStatus}`);
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value.toLowerCase());
+  };
+
+  const handleSort = (field) => {
+    const order = sortField === field && sortOrder === "asc" ? "desc" : "asc";
+    setSortField(field);
+    setSortOrder(order);
     setOrders((prevOrders) =>
-      prevOrders.map((order) =>
-        order.id === orderId ? { ...order, status: newStatus } : order
-      )
+      [...prevOrders].sort((a, b) => {
+        if (order === "asc") {
+          return a[field] > b[field] ? 1 : -1;
+        } else {
+          return a[field] < b[field] ? 1 : -1;
+        }
+      })
     );
   };
 
-  // --- Render Logic ---
+  const filteredOrders = orders.filter(
+    (order) =>
+      order.customerName.toLowerCase().includes(searchQuery) ||
+      order.id.toLowerCase().includes(searchQuery)
+  );
+
   if (loading) {
-    // ... loading state ...
     return (
       <div className="order-status-container loading">Loading orders...</div>
     );
   }
 
   if (error) {
-    // ... error state ...
     return <div className="order-status-container error">Error: {error}</div>;
   }
 
   return (
     <div className="order-status-container">
-      <h2>Manage Customer Orders</h2>
+      {/* Search Bar */}
+      <div className="search-bar">
+        <FontAwesomeIcon icon={faSearch} />
+        <input
+          type="text"
+          placeholder="Search by Order ID or Customer Name"
+          value={searchQuery}
+          onChange={handleSearch}
+        />
+      </div>
 
-      {orders.length === 0 ? (
+      {filteredOrders.length === 0 ? (
         <p>No active orders found.</p>
       ) : (
         <table className="orders-table">
-          {/* ... (thead remains the same) ... */}
           <thead>
             <tr>
-              <th>Order ID</th>
-              <th>Customer Name</th>
+              <th onClick={() => handleSort("id")}>
+                Order ID <FontAwesomeIcon icon={faSort} />
+              </th>
+              <th onClick={() => handleSort("customerName")}>
+                Customer Name <FontAwesomeIcon icon={faSort} />
+              </th>
               <th>Delivery Address / Note</th>
-              <th>Status</th>
+              <th onClick={() => handleSort("status")}>
+                Status <FontAwesomeIcon icon={faSort} />
+              </th>
               <th>Items</th>
-              <th>Total Bill</th>
-              <th>Actions</th>
+              <th onClick={() => handleSort("totalBill")}>
+                Total Bill <FontAwesomeIcon icon={faSort} />
+              </th>
+              <th>Details</th>
             </tr>
           </thead>
           <tbody>
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <tr key={order.id}>
-                {/* ... (other tds remain the same) ... */}
                 <td>{order.id}</td>
                 <td>{order.customerName}</td>
                 <td>{order.deliveryAddress}</td>
                 <td>
                   <select
+                    className={`status-select status-${order.status
+                      .toLowerCase()
+                      .replace(/ /g, "-")}`}
                     value={order.status}
                     onChange={(e) =>
                       handleStatusChange(order.id, e.target.value)
                     }
-                    className={`status-select status-${order.status.toLowerCase().replace(/ /g, "-")}`}
                   >
-                    {/* ... options ... */}
                     <option value="Pending">Pending</option>
                     <option value="Confirmed">Confirmed</option>
                     <option value="Ready for Pickup">Ready for Pickup</option>
@@ -234,12 +251,11 @@ function UpdateOrderStatus() {
                   {order.totalBill.toLocaleString("vi-VN")}
                 </td>
                 <td>
-                  {/* Button now calls handleViewDetails */}
                   <button
-                    className="details-button"
-                    onClick={() => handleViewDetails(order.id)} // <-- Updated onClick
+                    className="icon-button"
+                    onClick={() => handleViewDetails(order.id)}
                   >
-                    Details
+                    <FontAwesomeIcon icon={faInfoCircle} />
                   </button>
                 </td>
               </tr>
@@ -248,7 +264,6 @@ function UpdateOrderStatus() {
         </table>
       )}
 
-      {/* Render the Modal Conditionally */}
       {isModalOpen && (
         <OrderDetailsModal order={selectedOrder} onClose={closeModal} />
       )}

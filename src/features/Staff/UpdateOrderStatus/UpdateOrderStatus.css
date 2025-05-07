@@ -53,6 +53,11 @@
   background-color: #f1f1f1;
 }
 
+.orders-table td:last-child {
+  text-align: center;
+  vertical-align: middle;
+}
+
 .center-text {
   text-align: center;
 }
