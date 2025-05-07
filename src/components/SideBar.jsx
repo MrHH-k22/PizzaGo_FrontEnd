@@ -1,7 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 
 function SideBar({ menuItems, children }) {
+  const location = useLocation();
+
   return (
     <div>
       <button
@@ -9,7 +12,7 @@ function SideBar({ menuItems, children }) {
         data-drawer-toggle="default-sidebar"
         aria-controls="default-sidebar"
         type="button"
-        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+        className="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
       >
         <span className="sr-only">Open sidebar</span>
         <svg
@@ -29,20 +32,32 @@ function SideBar({ menuItems, children }) {
 
       <aside
         id="default-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-red-600"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
+        <div className="h-full px-3 py-4 overflow-y-auto">
+          {/* Logo Section */}
+          <div className="flex justify-center mb-6">
+            <img
+              src="/imgs/Logo.png"
+              alt="PizzaGo Logo"
+              className="h-32 object-contain"
+            />
+          </div>
+
+          {/* Menu Items */}
           <ul className="space-y-2 font-medium">
             {menuItems.map((item, index) => (
               <li key={index}>
                 <a
                   href={item.href}
-                  className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
+                  className={`flex items-center p-2 rounded-lg text-white hover:bg-red-700 transition ${
+                    location.pathname === item.href ? "bg-red-800" : ""
+                  }`}
                 >
                   {item.icon && (
                     <svg
-                      className="shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                      className="shrink-0 w-5 h-5 text-white transition duration-75"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="currentColor"
@@ -68,7 +83,7 @@ function SideBar({ menuItems, children }) {
         </div>
       </aside>
 
-      <div className="p-4  rounded-lg dark:border-gray-700">{children}</div>
+      <div className="p-4 rounded-lg">{children}</div>
     </div>
   );
 }
