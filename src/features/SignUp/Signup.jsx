@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa"; // Import necessary icons
+import useSignUp from "../../hooks/useSignUp";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const { registerUser, isCreatingUser, isSuccess } = useSignUp();
 
   // Basic form state (optional, for completeness)
   const [formData, setFormData] = useState({
@@ -29,7 +31,7 @@ function SignUp() {
     }
     // Rest of your submission logic
     console.log("Form Data:", formData);
-    alert("Sign up submitted! (Check console)");
+    registerUser(formData);
   };
 
   return (
