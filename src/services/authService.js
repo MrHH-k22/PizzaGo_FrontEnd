@@ -4,9 +4,21 @@ const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const signupUser = async (data) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/signUp`, data);
+    const transformedData = {
+      fullName: data.fullname,
+      email: data.email,
+      password: data.password,
+      address: data.address,
+    };
+
+    console.log("Sending signup data:", transformedData);
+    const response = await axios.post(
+      `${API_URL}/auth/signUp`,
+      transformedData
+    );
     return response.data;
   } catch (error) {
+    console.error("Signup error details:", error);
     const errMsg =
       error.response?.data?.message || "Không thể đăng kí tài khoản";
     throw { message: errMsg };
