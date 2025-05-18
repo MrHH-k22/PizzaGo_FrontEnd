@@ -1,6 +1,8 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import AppLayout from "./layouts/AppLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
@@ -13,6 +15,7 @@ import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderSta
 import Checkout from "./features/Checkout/Checkout";
 
 import ManageAccounts from "./features/Manager/ManageAccounts/ManageAccounts";
+import Logout from "./features/LogOut/Logout";
 
 const staffMenuItems = [
   {
@@ -84,32 +87,64 @@ const router = createBrowserRouter([
         path: "/checkout",
         element: <Checkout />,
       },
+      {
+        path: "/logout",
+        element: <Logout />,
+      },
     ],
   },
   {
     path: "/staff",
-    element: <StaffLayout menuItems={staffMenuItems} />,
+    element: <ProtectedRoute requiredRole="Staff" />,
     children: [
       {
-        path: "updateorderstatus",
-        element: <UpdateOrderStatus />,
+        path: "",
+        element: <StaffLayout menuItems={staffMenuItems} />,
+        children: [
+          {
+            path: "updateorderstatus",
+            element: <UpdateOrderStatus />,
+          },
+        ],
       },
     ],
   },
   {
     path: "/manager",
-    element: <StaffLayout menuItems={managerMenuItems} />,
+    element: <ProtectedRoute requiredRole="Manager" />,
     children: [
       {
-        path: "manageaccounts",
-        element: <ManageAccounts />,
+        path: "",
+        element: <StaffLayout menuItems={managerMenuItems} />,
+        children: [
+          {
+            path: "manageaccounts",
+            element: <ManageAccounts />,
+          },
+        ],
       },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
+  );
 }
 
 export default App;

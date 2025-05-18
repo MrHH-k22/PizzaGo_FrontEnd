@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa"; // Import necessary icons
+import useSignUp from "../../hooks/useSignUp";
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const { registerUser, isCreatingUser, isSuccess } = useSignUp();
 
   // Basic form state (optional, for completeness)
   const [formData, setFormData] = useState({
@@ -24,12 +27,19 @@ function SignUp() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.password !== formData.confirmPassword) {
-      alert("Mật khẩu không khớp!");
+      toast.error("Mật khẩu không khớp!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
       return;
     }
     // Rest of your submission logic
     console.log("Form Data:", formData);
-    alert("Sign up submitted! (Check console)");
+    registerUser(formData);
   };
 
   return (

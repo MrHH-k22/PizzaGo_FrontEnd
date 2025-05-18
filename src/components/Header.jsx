@@ -3,24 +3,58 @@ import { Link } from "react-router-dom";
 import { FiMenu } from "react-icons/fi";
 import { useState } from "react";
 import DropDownLink from "./DropDownLink";
-
-const servicesAndProducts = [
-  { name: "Log in", link: "/login" },
-  { name: "Sign up", link: "/signup" },
-  { name: "hr", link: "/" },
-  { name: "Order Tracking", link: "/" },
-  { name: "Account", link: "/" },
-  { name: "Sign out", link: "/" },
-];
+import { useAuth } from "../hooks/useAuth";
 
 function Header() {
   const [tabOpen, setTabOpen] = useState(null);
+  const { user } = useAuth();
+
+  // Dynamic menu items based on authentication status
+  const getMenuItems = () => {
+    // Base menu items for guests
+    if (!user) {
+      return [
+        { name: "Log in", link: "/login" },
+        { name: "Sign up", link: "/signup" },
+        { name: "hr", link: "/" },
+        { name: "Order Tracking", link: "/" },
+      ];
+    }
+
+    // Role-specific menu configurations
+    const menuByRole = {
+      Manager: [
+        { name: "Account", link: "/" },
+        { name: "Manager Dashboard", link: "/manager/manageaccounts" },
+      ],
+      Staff: [
+        { name: "Account", link: "/" },
+        { name: "Staff Manager", link: "/staff/updateorderstatus" },
+      ],
+      Customer: [
+        { name: "Account", link: "/" },
+        { name: "Order Tracking", link: "/" },
+      ],
+    };
+
+    // Get menu items for current role (default to Customer if role doesn't match)
+    const roleSpecificItems = menuByRole[user.role] || menuByRole.Customer;
+
+    // Add common items for all logged-in users
+    return [
+      ...roleSpecificItems,
+      { name: "hr", link: "/" },
+      { name: "Sign out", link: "/logout" },
+    ];
+  };
 
   return (
     <header className="relative rounded-b-3xl mx-auto w-full max-w-screen-xl flex items-center justify-between px-12 py-14 bg-white shadow-sm h-24 ">
       {/* Name Section */}
       <div className="flex flex-col text-xl text-gray-700">
-        <span className="">Hello, Nguyễn Mai Huy Hoàng</span>
+        <span className="">
+          {user ? `Hello, ${user.name}` : "Hello, Guest"}
+        </span>
       </div>
 
       {/* Logo Section */}
@@ -42,10 +76,9 @@ function Header() {
           <FaCartShopping size={18} />
         </Link>
 
-        {/* <FiMenu /> */}
         <DropDownLink
           title="DropdownMenu"
-          items={servicesAndProducts}
+          items={getMenuItems()}
           tabOpen={tabOpen}
           setTabOpen={setTabOpen}
           icon={<FiMenu />}
