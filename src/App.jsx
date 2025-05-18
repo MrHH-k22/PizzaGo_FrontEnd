@@ -14,6 +14,7 @@ import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderSta
 import Checkout from "./features/Checkout/Checkout";
 
 import ManageAccounts from "./features/Manager/ManageAccounts/ManageAccounts";
+import Logout from "./features/LogOut/Logout";
 
 const staffMenuItems = [
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <Checkout />,
+      },
+      {
+        path: "/logout",
+        element: <Logout />,
       },
     ],
   },

@@ -9,13 +9,25 @@ import {
   FaUserCircle,
 } from "react-icons/fa";
 import Logo_PizzaGo from "/imgs/Logo.png";
+import useLogIn from "../../hooks/useLogIn";
 
 function LogIn() {
   const [showPassword, setShowPassword] = useState(false);
-  const [userRole, setUserRole] = useState("customer");
+  const [userRole, setUserRole] = useState("Customer");
+  const { logInUser, isLoggingIn, isSuccess } = useLogIn();
 
   const handleRoleChange = (e) => {
     setUserRole(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formData = {
+      email: e.target.email.value,
+      password: e.target.password.value,
+      role: userRole,
+    };
+    logInUser(formData); // Use the correctly named function
   };
 
   return (
@@ -78,7 +90,7 @@ function LogIn() {
 
         {/* Form Section */}
         <div className="bg-white p-6 md:p-8">
-          <form>
+          <form onSubmit={handleSubmit}>
             {/* Role Selector */}
             <div className="mb-4">
               <label
@@ -98,9 +110,9 @@ function LogIn() {
                   onChange={handleRoleChange}
                   className="w-full border border-gray-300 rounded-md py-2.5 pl-10 pr-4 text-gray-700 appearance-none focus:outline-none focus:ring-1 focus:ring-red-500 focus:border-red-500 transition duration-150 ease-in-out bg-white"
                 >
-                  <option value="customer">Customer</option>
-                  <option value="staff">Staff</option>
-                  <option value="manager">Manager</option>
+                  <option value="Customer">Customer</option>
+                  <option value="Staff">Staff</option>
+                  <option value="Manager">Manager</option>
                 </select>
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-gray-500">
                   <svg

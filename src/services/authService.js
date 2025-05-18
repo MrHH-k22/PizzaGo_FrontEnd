@@ -1,5 +1,5 @@
-import axios from "axios";
-import axiosAuth from "../axios/axios";
+// import axios from "axios";
+// import axiosAuth from "../axios/axios";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const signupUser = async (data) => {
@@ -12,24 +12,50 @@ export const signupUser = async (data) => {
     };
 
     console.log("Sending signup data:", transformedData);
-    const response = await axios.post(
-      `${API_URL}/auth/signUp`,
-      transformedData
-    );
-    return response.data;
+
+    const response = await fetch(`${API_URL}/auth/signUp`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(transformedData),
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw { message: responseData.message || "Không thể đăng kí tài khoản" };
+    }
+
+    return responseData;
   } catch (error) {
     console.error("Signup error details:", error);
-    const errMsg =
-      error.response?.data?.message || "Không thể đăng kí tài khoản";
+    const errMsg = error.message || "Không thể đăng kí tài khoản";
     throw { message: errMsg };
   }
 };
 export const logIn = async (data) => {
   try {
-    const response = await axios.post(`${API_URL}/auth/logIn`, data, {
-      withCredentials: true,
+    const transformedData = {
+      email: data.email,
+      password: data.password,
+      role: data.role,
+    };
+    const response = await fetch(`${API_URL}/auth/logIn`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(transformedData),
+      credentials: "include", // Include cookies in the request
     });
-    return response.data;
+    const responseData = await response.json();
+    if (!response.ok) {
+      throw {
+        message: responseData.message || "Không thể đăng nhập tài khoản",
+      };
+    }
+    return responseData.data;
   } catch (error) {
     const errMsg =
       error.response?.data?.message || "Không thể đăng nhập tài khoản";
@@ -38,11 +64,19 @@ export const logIn = async (data) => {
 };
 export const logOut = async () => {
   try {
-    const response = await axiosAuth.post(`${API_URL}/auth/logOut`);
-    return response.data;
+    const response = await fetch(`${API_URL}/auth/logOut`, {
+      method: "POST",
+      credentials: "include", // Include cookies in the request
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw { message: data.message || "Không thể đăng xuất tài khoản" };
+    }
+
+    return true;
   } catch (error) {
-    const errMsg =
-      error.response?.data?.message || "Không thể đăng xuất tài khoản";
+    const errMsg = error.message || "Không thể đăng xuất tài khoản";
     throw { message: errMsg };
   }
 };
