@@ -27,6 +27,13 @@ export default function useLogIn() {
         }),
         { expires: 7 }
       );
+      if (data.accessToken) {
+        Cookies.set("accessToken", data.accessToken, {
+          expires: 7,
+          secure: true,
+          sameSite: "strict",
+        });
+      }
       // Annouce when success
       toast.success("Đăng nhập thành công.", {
         position: "top-right",

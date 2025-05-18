@@ -1,5 +1,6 @@
 // import axios from "axios";
 // import axiosAuth from "../axios/axios";
+import Cookies from "js-cookie";
 const API_URL = import.meta.env.VITE_BACKEND_URL;
 
 export const signupUser = async (data) => {
@@ -77,6 +78,34 @@ export const logOut = async () => {
     return true;
   } catch (error) {
     const errMsg = error.message || "Không thể đăng xuất tài khoản";
+    throw { message: errMsg };
+  }
+};
+
+export const verifyAccess = async (requiredRole) => {
+  try {
+    // Get accessToken from cookie
+    const accessToken = Cookies.get("accessToken");
+
+    const response = await fetch(`${API_URL}/auth/verify-access`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: accessToken ? `Bearer ${accessToken}` : "",
+      },
+      body: JSON.stringify({ requiredRole }),
+      credentials: "include", // Still include cookies for session verification
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw { message: data.message || "Access verification failed" };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Access verification error:", error);
+    const errMsg = error.message || "Không thể xác thực quyền truy cập";
     throw { message: errMsg };
   }
 };

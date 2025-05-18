@@ -2,6 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 
 import AppLayout from "./layouts/AppLayout";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
@@ -94,21 +95,33 @@ const router = createBrowserRouter([
   },
   {
     path: "/staff",
-    element: <StaffLayout menuItems={staffMenuItems} />,
+    element: <ProtectedRoute requiredRole="Staff" />,
     children: [
       {
-        path: "updateorderstatus",
-        element: <UpdateOrderStatus />,
+        path: "",
+        element: <StaffLayout menuItems={staffMenuItems} />,
+        children: [
+          {
+            path: "updateorderstatus",
+            element: <UpdateOrderStatus />,
+          },
+        ],
       },
     ],
   },
   {
     path: "/manager",
-    element: <StaffLayout menuItems={managerMenuItems} />,
+    element: <ProtectedRoute requiredRole="Manager" />,
     children: [
       {
-        path: "manageaccounts",
-        element: <ManageAccounts />,
+        path: "",
+        element: <StaffLayout menuItems={managerMenuItems} />,
+        children: [
+          {
+            path: "manageaccounts",
+            element: <ManageAccounts />,
+          },
+        ],
       },
     ],
   },

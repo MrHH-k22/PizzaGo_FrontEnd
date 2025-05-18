@@ -23,5 +23,10 @@ export function useAuth() {
     setUser(null);
   };
 
-  return { user, setUser, logout };
+  const clearUser = () => {
+    Cookies.remove("userData");
+    setUser(null);
+  };
+
+  return { user, setUser, clearUser, logout };
 }
