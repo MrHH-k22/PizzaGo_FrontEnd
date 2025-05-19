@@ -1,55 +1,74 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import TabItem from "./TabItem";
 import { IoSearch } from "react-icons/io5";
 import { TbPizza } from "react-icons/tb";
 import { IoFastFoodOutline } from "react-icons/io5";
 import { RiDrinks2Line } from "react-icons/ri";
 import { LuVegan } from "react-icons/lu";
+import useGetCategory from "../../hooks/useGetCategory";
 
-const tabs = [
-  {
-    id: "0",
-    icon: <IoSearch />,
-    label: "SEARCH",
-  },
-  {
-    id: "1",
-    icon: <TbPizza />,
-    label: "PIZZA",
-  },
-  {
-    id: "2",
-    icon: <IoFastFoodOutline />,
-    label: "Food",
-  },
-  {
-    id: "3",
-    icon: <RiDrinks2Line />,
-    label: "Drinks",
-  },
-  {
-    id: "4",
-    icon: <LuVegan />,
-    label: "Vegetarian",
-  },
-];
-
-function TabBar() {
-  const [activeTab, setActiveTab] = useState("RECOMMEND");
+function TabBar({ onCategoryChange }) {
+  const [activeTab, setActiveTab] = useState("1"); // Mặc định là tab thứ 2
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [initialCategorySet, setInitialCategorySet] = useState(false);
 
-  const handleTabClick = (tabId) => {
+  const {
+    categories,
+    isLoading: isGettingCategory,
+    isError: isGettingCategoryError,
+    error: categoryError,
+  } = useGetCategory();
+
+  // Map các icon tương ứng với tên category
+  const getCategoryIcon = (categoryName) => {
+    const lowerCaseName = categoryName.toLowerCase();
+    if (lowerCaseName.includes("pizza")) return <TbPizza />;
+    if (lowerCaseName.includes("food")) return <IoFastFoodOutline />;
+    if (lowerCaseName.includes("drink")) return <RiDrinks2Line />;
+    if (lowerCaseName.includes("vegetarian") || lowerCaseName.includes("vegan"))
+      return <LuVegan />;
+    return <IoFastFoodOutline />; // Default icon
+  };
+
+  // Tạo tabs từ dữ liệu categories và thêm tab search
+  const tabs = useMemo(() => {
+    // Tab Search luôn là tab đầu tiên
+    const searchTab = [
+      {
+        id: "0",
+        icon: <IoSearch />,
+        label: "SEARCH",
+      },
+    ];
+
+    // Nếu không có categories hoặc đang loading, trả về chỉ tab search
+    if (!categories || isGettingCategory) return searchTab;
+
+    // Tạo các tab từ categories với id bắt đầu từ "1"
+    const categoryTabs = categories.map((category, index) => ({
+      id: (index + 1).toString(), // ID có định dạng "1", "2", "3",...
+      icon: getCategoryIcon(category.name),
+      label: category.name.toUpperCase(),
+      categoryId: category._id,
+    }));
+
+    return [...searchTab, ...categoryTabs];
+  }, [categories, isGettingCategory]);
+
+  const handleTabClick = (tabId, categoryId) => {
     if (tabId === "0") {
       // Khi bấm vào tab Search
       setIsSearchActive(true);
     } else {
       setActiveTab(tabId);
+      setIsSearchActive(false);
+      // Gọi callback để thông báo thay đổi category cho component cha
+      onCategoryChange(categoryId);
     }
   };
 
   const handleSearch = () => {
-    // Xử lý tìm kiếm
     console.log("Searching for:", searchQuery);
     // Thực hiện tìm kiếm với searchQuery
   };
@@ -58,6 +77,33 @@ function TabBar() {
     setIsSearchActive(false);
     setSearchQuery("");
   };
+
+  // Hiển thị loading khi đang lấy dữ liệu categories
+  if (isGettingCategory) {
+    return (
+      <div className="w-full h-[100px] flex items-center justify-center">
+        Loading categories...
+      </div>
+    );
+  }
+
+  // Hiển thị thông báo lỗi nếu có
+  if (isGettingCategoryError) {
+    return (
+      <div className="w-full h-[100px] flex items-center justify-center text-red-500">
+        Error loading categories: {categoryError?.message}
+      </div>
+    );
+  }
+
+  // Ngay sau khi kiểm tra loading, trước khi render
+  // Tự động thiết lập category đầu tiên làm mặc định nếu có
+  if (categories?.length > 0 && !initialCategorySet) {
+    setTimeout(() => {
+      onCategoryChange(categories[0]._id);
+      setInitialCategorySet(true);
+    }, 0);
+  }
 
   return (
     <div className="w-full overflow-x-auto h-[100px]">
@@ -94,7 +140,7 @@ function TabBar() {
               icon={tab.icon}
               label={tab.label}
               isActive={activeTab === tab.id}
-              onClick={() => handleTabClick(tab.id)}
+              onClick={() => handleTabClick(tab.id, tab.categoryId)}
             />
           ))}
         </div>
