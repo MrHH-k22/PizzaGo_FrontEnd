@@ -1,12 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { logIn } from "../services/authService";
-import { useNavigate } from "react-router";
 import { useAuth } from "./useAuth";
 import Cookies from "js-cookie";
 
 export default function useLogIn() {
-  const navigate = useNavigate();
   const { setUser } = useAuth();
   const {
     mutate: logInUser,

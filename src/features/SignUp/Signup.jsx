@@ -37,8 +37,6 @@ function SignUp() {
       });
       return;
     }
-    // Rest of your submission logic
-    console.log("Form Data:", formData);
     registerUser(formData);
   };
 
