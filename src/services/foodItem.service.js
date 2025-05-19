@@ -20,3 +20,27 @@ export const getFoodItems = async () => {
     throw error;
   }
 };
+
+export const searchFoodItems = async (query) => {
+  try {
+    const response = await fetch(
+      `${API_URL}/foodItem/search?query=${encodeURIComponent(query)}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to search food items");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error searching food items:", error);
+    throw error;
+  }
+};
