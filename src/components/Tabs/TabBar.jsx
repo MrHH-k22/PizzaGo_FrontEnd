@@ -7,7 +7,7 @@ import { RiDrinks2Line } from "react-icons/ri";
 import { LuVegan } from "react-icons/lu";
 import useGetCategory from "../../hooks/useGetCategory";
 
-function TabBar({ onCategoryChange }) {
+function TabBar({ onCategoryChange, onSearch }) {
   const [activeTab, setActiveTab] = useState("1"); // Mặc định là tab thứ 2
   const [isSearchActive, setIsSearchActive] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -69,13 +69,15 @@ function TabBar({ onCategoryChange }) {
   };
 
   const handleSearch = () => {
-    console.log("Searching for:", searchQuery);
-    // Thực hiện tìm kiếm với searchQuery
+    if (searchQuery.trim()) {
+      onSearch(searchQuery);
+    }
   };
 
   const handleCancel = () => {
     setIsSearchActive(false);
     setSearchQuery("");
+    onSearch("");
   };
 
   // Hiển thị loading khi đang lấy dữ liệu categories
@@ -108,27 +110,29 @@ function TabBar({ onCategoryChange }) {
   return (
     <div className="w-full overflow-x-auto h-[100px]">
       {isSearchActive ? (
-        // Hiển thị thanh tìm kiếm khi đã bấm nút tìm kiếm
         <div className="flex items-center w-full gap-2 p-2 ease-out">
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Tìm kiếm mọi thứ bạn muốn"
+            placeholder="Search for food..."
             className="flex-grow p-2 border border-gray-300 rounded"
             autoFocus
+            onKeyPress={(e) => {
+              if (e.key === "Enter") handleSearch();
+            }}
           />
           <button
             onClick={handleCancel}
             className="px-4 py-2 text-gray-700 bg-gray-200 rounded"
           >
-            Đóng
+            Close
           </button>
           <button
             onClick={handleSearch}
             className="px-4 py-2 text-white bg-red-600 rounded"
           >
-            Tìm kiếm
+            Search
           </button>
         </div>
       ) : (
