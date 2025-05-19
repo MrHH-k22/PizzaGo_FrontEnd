@@ -24,7 +24,7 @@ function PizzaModal({ toggleModal }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [handleClickOutside]); // handleClickOutside is now stable due to useCallback
+  }, [handleClickOutside]);
 
   const decreaseQuantity = () => {
     if (quantity > 1) {

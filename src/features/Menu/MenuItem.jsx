@@ -1,18 +1,32 @@
 import { FaCirclePlus } from "react-icons/fa6";
 const IMAGE_URL = import.meta.env.VITE_BACKEND_URL_IMAGE;
+import useAddToCart from "../../hooks/useAddToCart.js";
 
 function MenuItem({ foodItem, toggleModal }) {
   // Function to get image path based on image name
+  const { addToCart, isAddingToCart, isError, isSuccess, error, data } =
+    useAddToCart();
+
   const getImagePath = (imageName) => {
-    // You might need to adjust this based on your actual image storage structure
     return `${IMAGE_URL}/${imageName}`;
   };
 
   // If no food item is provided, return null or a placeholder
   if (!foodItem) return null;
 
+  function handleAddToCart(e) {
+    // Ngăn sự kiện click lan truyền lên phần tử cha
+    e.stopPropagation();
+
+    // Logic to add the food item to the cart
+    addToCart(foodItem._id, 1);
+  }
+
   return (
-    <div className="group flex rounded-lg border border-gray-300 bg-white overflow-hidden w-full transition-shadow duration-300 hover:shadow-xl">
+    <div
+      className="group flex rounded-lg border border-gray-300 bg-white overflow-hidden w-full transition-shadow duration-300 hover:shadow-xl"
+      onClick={() => toggleModal(foodItem)}
+    >
       {/* Phần hình ảnh bên trái */}
       <div className="w-1/3 p-3">
         <div className="relative h-full w-full overflow-hidden rounded-lg">
@@ -40,7 +54,7 @@ function MenuItem({ foodItem, toggleModal }) {
             {foodItem.price.toLocaleString()} đ
           </span>
           <button
-            onClick={() => toggleModal(foodItem)}
+            onClick={handleAddToCart}
             className="text-red-500 rounded-full w-8 h-8 flex items-center justify-center text-4xl"
           >
             <FaCirclePlus />
