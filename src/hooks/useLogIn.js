@@ -2,10 +2,12 @@ import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { logIn } from "../services/authService";
 import { useNavigate } from "react-router";
+import { useAuth } from "./useAuth";
 import Cookies from "js-cookie";
 
 export default function useLogIn() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const {
     mutate: logInUser,
     isLoading: isLoggingIn,
@@ -34,6 +36,13 @@ export default function useLogIn() {
           sameSite: "strict",
         });
       }
+
+      setUser({
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        role: data.role,
+      });
       // Annouce when success
       toast.success("Đăng nhập thành công.", {
         position: "top-right",
@@ -43,7 +52,7 @@ export default function useLogIn() {
         pauseOnHover: true,
         draggable: true,
       });
-      navigate("/");
+      window.location.href = "/";
     },
     onError: (error) => {
       toast.error(`Đăng nhập thất bại: ${error.message}`, {
