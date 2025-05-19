@@ -1,6 +1,18 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
+import { 
+  Search, 
+  Edit2, 
+  Trash2, 
+  Plus, 
+  X, 
+  User, 
+  Mail, 
+  MapPin, 
+  AlertCircle,
+  ChevronRight
+} from "lucide-react";
 
 function SideBar({ menuItems, children }) {
   const location = useLocation();
@@ -32,54 +44,78 @@ function SideBar({ menuItems, children }) {
 
       <aside
         id="default-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-red-600"
+        className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-gradient-to-b from-red-600 to-red-700 shadow-xl"
         aria-label="Sidebar"
       >
-        <div className="h-full px-3 py-4 overflow-y-auto">
-          {/* Logo Section */}
-          <div className="flex justify-center mb-6">
-            <img
-              src="/imgs/Logo.png"
-              alt="PizzaGo Logo"
-              className="h-32 object-contain"
-            />
-          </div>
+        <div className="h-full flex flex-col justify-between">
+          <div className="px-4 py-5 overflow-y-auto">
+            {/* Logo Section with enhanced styling */}
+            <div className="flex justify-center mb-8">
+              <div className="bg-white p-2 rounded-xl shadow-md">
+                <img
+                  src="/imgs/Logo.png"
+                  alt="PizzaGo Logo"
+                  className="h-24 object-contain"
+                />
+              </div>
+            </div>
+            
+            {/* Divider */}
+            <div className="border-t border-red-400/30 mb-6"></div>
 
-          {/* Menu Items */}
-          <ul className="space-y-2 font-medium">
-            {menuItems.map((item, index) => (
-              <li key={index}>
-                <a
-                  href={item.href}
-                  className={`flex items-center p-2 rounded-lg text-white hover:bg-red-700 transition ${
-                    location.pathname === item.href ? "bg-red-800" : ""
-                  }`}
-                >
-                  {item.icon && (
-                    <svg
-                      className="shrink-0 w-5 h-5 text-white transition duration-75"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="currentColor"
-                      viewBox={item.icon.viewBox}
-                    >
-                      <path d={item.icon.path} />
-                    </svg>
-                  )}
-                  <span className="flex-1 ms-3 whitespace-nowrap">
-                    {item.label}
-                  </span>
-                  {item.badge && (
-                    <span
-                      className={`inline-flex items-center justify-center px-2 ms-3 text-sm font-medium ${item.badge.className}`}
-                    >
-                      {item.badge.text}
+            {/* Menu Items with enhanced styling */}
+            <ul className="space-y-1.5 font-medium">
+              {menuItems.map((item, index) => (
+                <li key={index}>
+                  <Link
+                    to={item.href}
+                    className={`flex items-center p-3 rounded-xl text-white hover:bg-red-500/40 transition-all duration-200 group relative ${
+                      location.pathname === item.href 
+                        ? "bg-white/20 shadow-sm backdrop-blur-sm font-semibold"
+                        : "hover:translate-x-1"
+                    }`}
+                  >
+                    {location.pathname === item.href && (
+                      <span className="absolute left-0 top-0 bottom-0 w-1 bg-white rounded-full"></span>
+                    )}
+                    <div className={`flex items-center justify-center w-7 h-7 shrink-0 rounded-lg ${location.pathname === item.href ? "bg-white/30" : "bg-white/10"}`}>
+                      {item.icon && (
+                        <svg
+                          className="w-4 h-4 text-white transition duration-75"
+                          aria-hidden="true"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="currentColor"
+                          viewBox={item.icon.viewBox}
+                        >
+                          <path d={item.icon.path} />
+                        </svg>
+                      )}
+                    </div>
+                    
+                    <span className="flex-1 ms-3 whitespace-nowrap">
+                      {item.label}
                     </span>
-                  )}
-                </a>
-              </li>
-            ))}
-          </ul>
+                    
+                    {item.badge && (
+                      <span
+                        className={`inline-flex items-center justify-center px-2 py-0.5 ms-2 text-xs font-semibold rounded-full ${item.badge.className || "bg-red-900 text-white"}`}
+                      >
+                        {item.badge.text}
+                      </span>
+                    )}
+                    
+                    <ChevronRight className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ${location.pathname === item.href ? "opacity-100" : ""}`} />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Footer */}
+          <div className="mt-auto p-4 text-center text-white/70 border-t border-red-400/30 text-xs">
+            <p>PizzaGo Staff Portal</p>
+            <p className="mt-1">&copy; {new Date().getFullYear()} PizzaGo</p>
+          </div>
         </div>
       </aside>
 
