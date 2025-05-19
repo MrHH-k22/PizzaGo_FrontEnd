@@ -7,109 +7,8 @@ import {
   faSort,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
-
-// --- Mock Data (Replace with API call) ---
-// Simulates the kind of data you might get from your backend API
-const mockOrders = [
-  {
-    id: "ORD1001",
-    customerName: "Nguyễn Văn A",
-    deliveryAddress: "123 Đường ABC, Quận 1, TP. HCM",
-    status: "Confirmed",
-    itemCount: 3,
-    totalBill: 250000,
-    items: [
-      {
-        id: "PZ001",
-        name: "Pizza Hải Sản Pesto Xanh",
-        quantity: 1,
-        unitPrice: 149000,
-        imageUrl: "/images/ExamplePizza.png",
-      }, // Add actual image paths
-      {
-        id: "SD002",
-        name: "Khoai tây chiên",
-        quantity: 1,
-        unitPrice: 35000,
-        imageUrl: "/images/fries.jpg",
-      },
-      {
-        id: "DR001",
-        name: "Coca-Cola Lon",
-        quantity: 1,
-        unitPrice: 15000,
-        imageUrl: "/images/coke.jpg",
-      },
-    ],
-  },
-  {
-    id: "ORD1002",
-    customerName: "Trần Thị B",
-    deliveryAddress: "456 Hẻm XYZ, Quận Bình Thạnh, TP. HCM",
-    status: "Pending",
-    itemCount: 2,
-    totalBill: 180000,
-    items: [
-      {
-        id: "PZ005",
-        name: "Pizza Bò Băm",
-        quantity: 1,
-        unitPrice: 125000,
-        imageUrl: "/images/pizza-beef.jpg",
-      },
-      {
-        id: "SD005",
-        name: "Salad Trộn Dầu Giấm",
-        quantity: 1,
-        unitPrice: 55000,
-        imageUrl: "/images/salad.jpg",
-      },
-    ],
-  },
-  {
-    id: "ORD1003",
-    customerName: "Lê Hoàng C",
-    deliveryAddress: "789 Chung cư Z, Quận 7, TP. HCM",
-    status: "Delivering",
-    itemCount: 5, // Example has 2 items, adjust if needed
-    totalBill: 420000, // Example has 2 items, adjust if needed
-    items: [
-      {
-        id: "PZ001",
-        name: "Pizza Hải Sản Pesto Xanh",
-        quantity: 2,
-        unitPrice: 149000,
-        imageUrl: "/images/pizza-pesto.jpg",
-      },
-      {
-        id: "PZ003",
-        name: "Pizza Gà Nướng Nấm",
-        quantity: 1,
-        unitPrice: 135000,
-        imageUrl: "/images/pizza-chicken-mushroom.jpg",
-      },
-      // Add more items if itemCount is 5
-    ],
-  },
-  {
-    id: "ORD1004",
-    customerName: "Phạm Minh D",
-    deliveryAddress: "Pick up at store",
-    status: "Ready for Pickup",
-    itemCount: 1,
-    totalBill: 99000,
-    items: [
-      {
-        id: "PZ007",
-        name: "Pizza Phô Mai",
-        quantity: 1,
-        unitPrice: 99000,
-        imageUrl: "/images/pizza-cheese.jpg",
-      },
-    ],
-  },
-];
-// --- End Mock Data ---
+import useGetOrders from "../../../hooks/useGetOrders";
+import useUpdateStatusOrder from "../../../hooks/useUpdateStatusOrder";
 
 function UpdateOrderStatus() {
   const [orders, setOrders] = useState([]);
@@ -120,6 +19,8 @@ function UpdateOrderStatus() {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
+  const { updateStatusOrder } = useUpdateStatusOrder();
+  const { orders: rawOrders } = useGetOrders();
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -127,7 +28,25 @@ function UpdateOrderStatus() {
       setError(null);
       try {
         await new Promise((resolve) => setTimeout(resolve, 1000));
-        setOrders(mockOrders);
+
+        // Transform rawOrders to match the component's expected structure
+        if (rawOrders && rawOrders.length > 0) {
+          const transformedOrders = rawOrders.map((order) => ({
+            id: order._id,
+            customerName: order.customerId?.name || "Guest",
+            deliveryAddress: order.deliveryAddress,
+            status: capitalizeFirstLetter(order.status || "pending"),
+            itemCount: order.items?.length || 0,
+            totalBill: order.totalPrice || 0,
+            items: order.items || [],
+            note: order.note || "",
+            createdAt: new Date(order.createdAt).toLocaleString(),
+            updatedAt: new Date(order.updatedAt).toLocaleString(),
+          }));
+          setOrders(transformedOrders);
+        } else {
+          setOrders([]);
+        }
       } catch (err) {
         setError(err.message || "Could not fetch orders. Please try again.");
         setOrders([]);
@@ -135,8 +54,50 @@ function UpdateOrderStatus() {
         setLoading(false);
       }
     };
+
     fetchOrders();
-  }, []);
+  }, [rawOrders]);
+
+  // Helper function to capitalize status
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
+
+  const handleStatusChange = (orderId, newStatus) => {
+    // Cập nhật trạng thái cục bộ ngay lập tức để UI phản hồi nhanh
+    setOrders((prevOrders) =>
+      prevOrders.map((order) =>
+        order.id === orderId ? { ...order, status: newStatus } : order
+      )
+    );
+
+    // Gọi API để cập nhật status trên server
+    updateStatusOrder(
+      { orderId, newStatus },
+      {
+        onError: (error) => {
+          console.error("Failed to update order status:", error);
+
+          // Hoàn tác thay đổi cục bộ nếu API gọi thất bại
+          setOrders((prevOrders) =>
+            prevOrders.map((order) => {
+              if (order.id === orderId) {
+                // Tìm order gốc để khôi phục status
+                const originalOrder = rawOrders.find((o) => o._id === orderId);
+                return {
+                  ...order,
+                  status: capitalizeFirstLetter(
+                    originalOrder?.status || "pending"
+                  ),
+                };
+              }
+              return order;
+            })
+          );
+        },
+      }
+    );
+  };
 
   const handleViewDetails = (orderId) => {
     const orderToShow = orders.find((order) => order.id === orderId);
@@ -172,7 +133,7 @@ function UpdateOrderStatus() {
 
   const filteredOrders = orders.filter(
     (order) =>
-      order.customerName.toLowerCase().includes(searchQuery) ||
+      (order.customerName?.toLowerCase() || "").includes(searchQuery) ||
       order.id.toLowerCase().includes(searchQuery)
   );
 
@@ -219,6 +180,7 @@ function UpdateOrderStatus() {
               <th onClick={() => handleSort("totalBill")}>
                 Total Bill <FontAwesomeIcon icon={faSort} />
               </th>
+              <th>Created At</th>
               <th>Details</th>
             </tr>
           </thead>
@@ -227,29 +189,34 @@ function UpdateOrderStatus() {
               <tr key={order.id}>
                 <td>{order.id}</td>
                 <td>{order.customerName}</td>
-                <td>{order.deliveryAddress}</td>
+                <td>
+                  {order.deliveryAddress}
+                  {order.note && (
+                    <div className="order-note">
+                      <strong>Note:</strong> {order.note}
+                    </div>
+                  )}
+                </td>
                 <td>
                   <select
                     className={`status-select status-${order.status
                       .toLowerCase()
                       .replace(/ /g, "-")}`}
-                    value={order.status}
+                    value={order.status.toLowerCase()}
                     onChange={(e) =>
                       handleStatusChange(order.id, e.target.value)
                     }
                   >
-                    <option value="Pending">Pending</option>
-                    <option value="Confirmed">Confirmed</option>
-                    <option value="Ready for Pickup">Ready for Pickup</option>
-                    <option value="Delivering">Delivering</option>
-                    <option value="Completed">Completed</option>
-                    <option value="Cancelled">Cancelled</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="delivering">Delivering</option>
+                    <option value="completed">Completed</option>
                   </select>
                 </td>
                 <td className="center-text">{order.itemCount}</td>
-                <td className="right-text">
-                  {order.totalBill.toLocaleString("vi-VN")}
-                </td>
+                <td className="right-text">${order.totalBill.toFixed(2)}</td>
+
+                <td>{order.createdAt}</td>
                 <td>
                   <button
                     className="icon-button"

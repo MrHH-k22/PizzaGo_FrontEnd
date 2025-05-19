@@ -105,6 +105,11 @@
 .status-select.status-cancelled {
   border-left: 4px solid red;
 }
-.status-select.status-ready-for-pickup {
-  border-left: 4px solid #17a2b8; /* Teal */
+
+/* Add this to your UpdateOrderStatus.css file */
+.order-note {
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 4px;
+  font-style: italic;
 }
