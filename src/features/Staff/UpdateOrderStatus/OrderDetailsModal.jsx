@@ -19,24 +19,22 @@ function OrderDetailsModal({ order, onClose }) {
         <ul className="modal-items-list">
           {order.items && order.items.length > 0 ? (
             order.items.map((item) => (
-              <li key={item.id} className="modal-item">
+              <li key={item._id} className="modal-item">
                 <img
-                  src={item.imageUrl || "/images/placeholder.png"} // Use a placeholder if no image
-                  alt={item.name}
+                  src={`${import.meta.env.VITE_BACKEND_URL_IMAGE}/${item.foodItemId.image}`}
+                  alt={item.foodItemId.name}
                   className="modal-item-image"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = "/images/placeholder.png";
-                  }} // Fallback image on error
                 />
                 <div className="modal-item-info">
-                  <span className="modal-item-name">{item.name}</span>
+                  <span className="modal-item-name">
+                    {item.foodItemId.name}
+                  </span>
                   <span className="modal-item-quantity">
                     Quantity: {item.quantity}
                   </span>
                 </div>
                 <span className="modal-item-price">
-                  {item.unitPrice.toLocaleString("vi-VN")} đ
+                  {item.price.toLocaleString("es-US")} $
                 </span>
               </li>
             ))
