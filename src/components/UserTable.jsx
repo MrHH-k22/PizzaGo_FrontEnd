@@ -51,7 +51,7 @@ function UserTable({ users, onEdit, onDelete, onAdd }) {
                       <span>Edit</span>
                     </button>
                     <button
-                      onClick={() => onDelete(user.id)}
+                      onClick={() => onDelete(user._id)}
                       className="text-red-600 hover:text-red-900 inline-flex items-center gap-1"
                     >
                       <Trash2 size={16} />

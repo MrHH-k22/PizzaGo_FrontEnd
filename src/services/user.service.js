@@ -44,7 +44,7 @@ export const getUsers = async (role) => {
     }
 }
 export const addUser = async (user) => {
-    console.log("Adding user:", user);
+    // console.log("Adding user:", user);
     try {
         const response = await fetch(`${API_URL}/user/addUser`, {
             method: "POST",
@@ -61,7 +61,47 @@ export const addUser = async (user) => {
         }
         return data;
     } catch (error) {
-        console.error("Error adding user:", error);
+        // console.error("Error adding user:", error);
+        throw error;
+    }
+}
+export const editUser = async (user) => {
+    try {
+        const response = await fetch(`${API_URL}/user/editUser`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to edit user");
+        }
+        return data;
+    } catch (error) {
+        // console.error("Error editing user:", error);
+        throw error;
+    }
+}
+export const deleteUser = async (userId) => {
+    try {
+        const response = await fetch(`${API_URL}/user/deleteUser`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ userId }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+            throw new Error(data.message || "Failed to delete user");
+        }
+        return data;
+    } catch (error) {
+        // console.error("Error deleting user:", error);
         throw error;
     }
 }

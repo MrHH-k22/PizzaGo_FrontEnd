@@ -8,7 +8,8 @@ import HeaderManager from "../../../components/HeaderManager";
 import useGetUsers from "../../../hooks/useGetUsers";
 import LoadindSpinner from "../../../components/LoadingSpinner";
 import useAddUser from "../../../hooks/useAddUser";
-
+import useEditUser from "../../../hooks/useEditUser";
+import useDeleteUser from "../../../hooks/useDeleteUser";
 function ManageUsers() {
   const { listUsers, isLoading, isError, error } = useGetUsers("Customer");
   
@@ -18,6 +19,8 @@ function ManageUsers() {
   const [editingUser, setEditingUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { addNewUser, isAddingUser } = useAddUser();
+  const { editUserMutation, isEditingUser } = useEditUser();
+  const { deleteUserMutation, isDeletingUser } = useDeleteUser();
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(7);
@@ -31,16 +34,21 @@ function ManageUsers() {
     return <LoadindSpinner message="Loading users..." />;
   }
   const handleAddUser = (newUser) => {
-    console.log(newUser);
+    // console.log(newUser);
     if (newUser) {
-      addNewUser(newUser);
+      const userWithRole = {
+        ...newUser,
+        role: "Customer"
+      };
+      addNewUser(userWithRole);
     }
   };
 
   const handleEditUser = (updatedUser) => {
-    setUsers((prev) =>
-      prev.map((user) => (user.id === updatedUser.id ? updatedUser : user))
-    );
+    // console.log(updatedUser);
+    if (updatedUser) {
+      editUserMutation(updatedUser);
+    }
   };
 
   const openEditModal = (user) => {
@@ -56,14 +64,23 @@ function ManageUsers() {
   };
 
   const handleDeleteUser = (userId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this user?"
-    );
-    if (confirmDelete) {
-      setUsers(users.filter((user) => user.id !== userId));
+    // console.log("Delete user with ID:", userId);
+    if (userId) {
+      const currentItemCount = filteredUsers.length;
+      const isLastItemOnPage =
+        currentItemCount > 0 &&
+        indexOfFirstUser + 1 === currentItemCount &&
+        currentItemCount % itemsPerPage === 1;
+      deleteUserMutation(userId, {
+        onSuccess: () => {
+          if (isLastItemOnPage && currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+          }
+        }
+      });
     }
   };
-  
+
   const filteredUsers = users.filter(user => 
     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||

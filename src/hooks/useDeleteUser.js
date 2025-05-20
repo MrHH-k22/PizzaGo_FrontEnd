@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { addUser } from "../services/user.service";
+import { deleteUser } from "../services/user.service";
 
-export default function useAddUser() {
+export default function useDeleteUser() {
     const queryClient = useQueryClient();
     const {
-        mutate: addNewUser,
-        isLoading: isAddingUser,
+        mutate: deleteUserMutation,
+        isLoading: isDeletingUser,
         isError,
         isSuccess,
         error,
         data,
     } = useMutation({
-        mutationFn: (userData) => addUser(userData),
+        mutationFn: (userId) => deleteUser(userId),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
-            toast.success("User created successfully.", {
+            toast.success("User deleted successfully.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -25,7 +25,7 @@ export default function useAddUser() {
             });
         },
         onError: (error) => {
-            toast.error(`Failed to create user: ${error.message}`, {
+            toast.error(`Failed to delete user: ${error.message}`, {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -37,8 +37,8 @@ export default function useAddUser() {
     });
 
     return {
-        addNewUser,
-        isAddingUser,
+        deleteUserMutation,
+        isDeletingUser,
         isSuccess,
         isError,
         error,

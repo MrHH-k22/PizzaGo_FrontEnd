@@ -1,21 +1,21 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { addUser } from "../services/user.service";
+import { editUser } from "../services/user.service";
 
-export default function useAddUser() {
+export default function useEditUser() {
     const queryClient = useQueryClient();
     const {
-        mutate: addNewUser,
-        isLoading: isAddingUser,
+        mutate: editUserMutation,
+        isLoading: isEditingUser,
         isError,
         isSuccess,
         error,
         data,
     } = useMutation({
-        mutationFn: (userData) => addUser(userData),
+        mutationFn: (userData) => editUser(userData),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ['users'] });
-            toast.success("User created successfully.", {
+            toast.success("User updated successfully.", {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -25,7 +25,7 @@ export default function useAddUser() {
             });
         },
         onError: (error) => {
-            toast.error(`Failed to create user: ${error.message}`, {
+            toast.error(`Failed to update user: ${error.message}`, {
                 position: "top-right",
                 autoClose: 3000,
                 hideProgressBar: false,
@@ -37,8 +37,8 @@ export default function useAddUser() {
     });
 
     return {
-        addNewUser,
-        isAddingUser,
+        editUserMutation,
+        isEditingUser,
         isSuccess,
         isError,
         error,
