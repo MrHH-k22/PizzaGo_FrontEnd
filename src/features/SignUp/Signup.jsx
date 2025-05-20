@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaArrowLeft, FaEye, FaEyeSlash } from "react-icons/fa"; // Import necessary icons
 import useSignUp from "../../hooks/useSignUp";
 import { toast } from "react-toastify";
-
+import { Link } from "react-router";
 function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
   const { registerUser, isCreatingUser, isSuccess } = useSignUp();
@@ -218,12 +218,12 @@ function SignUp() {
         {/* Login Link */}
         <div className="mt-6 text-center text-sm text-gray-600">
           Already have an account?{" "}
-          <a
-            href="#" // Link to your login page
+          <Link
+            to="/login" // Link to your login page
             className="font-medium text-red-600 hover:text-red-700 hover:underline"
           >
             Log in
-          </a>
+          </Link>
         </div>
       </div>
     </div>

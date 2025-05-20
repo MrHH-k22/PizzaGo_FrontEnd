@@ -10,7 +10,7 @@ import {
 } from "react-icons/fa";
 import Logo_PizzaGo from "/imgs/Logo.png";
 import useLogIn from "../../hooks/useLogIn";
-
+import { Link } from "react-router";
 function LogIn() {
   const [showPassword, setShowPassword] = useState(false);
   const [userRole, setUserRole] = useState("Customer");
@@ -201,12 +201,12 @@ function LogIn() {
           {/* Sign Up Link */}
           <div className="mt-6 text-center text-sm text-gray-600">
             Have no account?{" "}
-            <a
-              href="#"
+            <Link
+              to="/signup"
               className="font-medium text-red-600 hover:text-red-700 hover:underline"
             >
               Sign up
-            </a>
+            </Link>
           </div>
         </div>
       </div>

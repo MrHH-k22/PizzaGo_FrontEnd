@@ -25,7 +25,7 @@ function Header() {
     const menuByRole = {
       Manager: [
         { name: "Account", link: "/" },
-        { name: "Manager Dashboard", link: "/manager/manageaccounts" },
+        { name: "Manager Dashboard", link: "/manager/manageusers" },
       ],
       Staff: [
         { name: "Account", link: "/" },

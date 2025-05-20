@@ -3,20 +3,16 @@ import { ToastContainer } from "react-toastify";
 
 import AppLayout from "./layouts/AppLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
 import SignUp from "./features/SignUp/Signup";
 import Cart from "./features/Cart/Cart";
-
 import StaffLayout from "./layouts/StaffLayout";
-
 import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
 import Checkout from "./features/Checkout/Checkout";
-
-import ManageAccounts from "./features/Manager/ManageAccounts/ManageAccounts";
 import Logout from "./features/LogOut/Logout";
-
+import ManageUsers from "./features/Manager/ManageAccounts/ManageUsers";
+import ManageStaffs from "./features/Manager/ManageAccounts/ManageStaffs";
 const staffMenuItems = [
   {
     href: "/staff/updateorderstatus",
@@ -38,8 +34,16 @@ const staffMenuItems = [
 
 const managerMenuItems = [
   {
-    href: "/manager/manageaccounts",
-    label: "Manage Accounts",
+    href: "/manager/manageusers",
+    label: "Manage Users",
+    icon: {
+      viewBox: "0 0 22 21",
+      path: "M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z",
+    },
+  },
+  {
+    href: "/manager/managestaffs",
+    label: "Manage Staffs",
     icon: {
       viewBox: "0 0 22 21",
       path: "M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z",
@@ -132,9 +136,13 @@ const router = createBrowserRouter([
         element: <StaffLayout menuItems={managerMenuItems} />,
         children: [
           {
-            path: "manageaccounts",
-            element: <ManageAccounts />,
+            path: "manageusers",
+            element: <ManageUsers />,
           },
+          {
+            path: "managestaffs",
+            element: <ManageStaffs />,
+          }
         ],
       },
     ],
