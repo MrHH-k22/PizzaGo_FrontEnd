@@ -1,19 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { getCategories } from "../services/category.service";
+import { getCart } from "../services/cart.service";
+import { useNavigate } from "react-router-dom";
 
-export default function useGetCategory() {
+export default function useGetCart() {
   const {
-    data: categories,
+    data: cart,
     isLoading,
     isError,
     error,
     refetch,
   } = useQuery({
-    queryKey: ["categories"],
-    queryFn: getCategories,
+    queryKey: ["cart"],
+    queryFn: getCart,
     onError: (error) => {
-      toast.error(`Failed to fetch categories: ${error.message}`, {
+      console.log("error status", error);
+      toast.error(`Failed to fetch cart: ${error.message}`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -25,7 +27,7 @@ export default function useGetCategory() {
   });
 
   return {
-    categories,
+    cart,
     isLoading,
     isError,
     error,
