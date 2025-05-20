@@ -2,12 +2,18 @@ import { IoIosArrowRoundBack } from "react-icons/io";
 import CartList from "./CartList";
 import CartSummary from "./CartSummary";
 import { useNavigate } from "react-router-dom";
+import useGetCart from "../../hooks/useGetCart";
 
 function Cart() {
+  const { cart, isLoading, isError, error } = useGetCart();
+  console.log("cart", cart);
   const navigate = useNavigate();
   function handleGoBack() {
     navigate(-1);
   }
+
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
   return (
     <div className="cart-container">
       <div class="flex py-4 md:py-6 items-center justify-between bg-white flex-row">
@@ -24,8 +30,8 @@ function Cart() {
         <div class="w-[48px] h-3"></div>
       </div>
       <div className="flex flex-col md:flex-row gap-2 md:gap-4  ">
-        <CartList />
-        <CartSummary />
+        <CartList cart={cart} />
+        <CartSummary cart={cart} />
       </div>
     </div>
   );

@@ -79,20 +79,34 @@ const router = createBrowserRouter([
         path: "/signup",
         element: <SignUp />,
       },
-      {
-        path: "/cart",
-        element: <Cart />,
-      },
-      {
-        path: "/checkout",
-        element: <Checkout />,
-      },
+
       {
         path: "/logout",
         element: <Logout />,
       },
     ],
   },
+  {
+    path: "/customer",
+    element: <ProtectedRoute requiredRole="Customer" />,
+    children: [
+      {
+        path: "",
+        element: <AppLayout />,
+        children: [
+          {
+            path: "cart",
+            element: <Cart />,
+          },
+          {
+            path: "checkout",
+            element: <Checkout />,
+          },
+        ],
+      },
+    ],
+  },
+
   {
     path: "/staff",
     element: <ProtectedRoute requiredRole="Staff" />,

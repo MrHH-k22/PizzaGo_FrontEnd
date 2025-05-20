@@ -4,7 +4,7 @@ import useGetFoodItems from "../../hooks/useGetFoodItem";
 import useSearchFood from "../../hooks/useSearchFoodItem";
 import MenuItem from "./MenuItem";
 
-function Menu({ toggleModal }) {
+function Menu({ toggleModal, handleFoodSelect }) {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isSearchMode, setIsSearchMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -104,6 +104,7 @@ function Menu({ toggleModal }) {
                 key={item._id}
                 foodItem={item}
                 toggleModal={toggleModal}
+                handleFoodSelect={handleFoodSelect}
               />
             ))
           ) : (

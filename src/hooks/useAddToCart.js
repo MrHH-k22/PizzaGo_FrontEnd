@@ -6,14 +6,14 @@ import { useNavigate } from "react-router-dom";
 export default function useAddToCart() {
   const navigate = useNavigate();
   const {
-    mutate: addToCart,
+    mutate: addToCartMutation,
     isLoading: isAddingToCart,
     isError,
     isSuccess,
     error,
     data,
   } = useMutation({
-    mutationFn: (foodData) => addToCartService(foodData),
+    mutationFn: (data) => addToCartService(data.foodId, data.quantity),
     onSuccess: () => {
       toast.success("Thêm vào giỏ hàng thành công.", {
         position: "top-right",
@@ -48,6 +48,10 @@ export default function useAddToCart() {
       }
     },
   });
+
+  const addToCart = (foodId, quantity) => {
+    addToCartMutation({ foodId, quantity });
+  };
 
   return {
     addToCart,

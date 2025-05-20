@@ -69,7 +69,7 @@ function Header() {
       {/* Action Buttons Section */}
       <div className="flex items-center gap-6 text-xl">
         <Link
-          to="/cart"
+          to="/customer/cart"
           className="flex items-center justify-center gap-2 py-3 px-6 border-2 border-red-600 bg-red-600 text-white rounded-full text-base hover:bg-white hover:text-red-600 transition duration-300 ease-in-out"
         >
           <span className="font-semibold">1</span>
