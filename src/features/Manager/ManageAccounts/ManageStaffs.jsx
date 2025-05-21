@@ -10,23 +10,7 @@ import LoadindSpinner from "../../../components/LoadingSpinner";
 import useAddUser from "../../../hooks/useAddUser";
 import useEditUser from "../../../hooks/useEditUser";
 import useDeleteUser from "../../../hooks/useDeleteUser";
-// Mock data for staff
-const mockStaff = [
-  {
-    id: "STF001",
-    fullName: "Phạm Thị D",
-    email: "phamthid@pizzago.com",
-    address: "234 Đường KLM, Quận 2, TP. HCM",
-    role: "Chef",
-  },
-  {
-    id: "STF002",
-    fullName: "Võ Minh E",
-    email: "vominhe@pizzago.com",
-    address: "567 Đường NOP, Quận 3, TP. HCM",
-    role: "Delivery",
-  },
-];
+
 
 function ManageStaffs() {
   const { listUsers, isLoading, isError, error } = useGetUsers("Staff");

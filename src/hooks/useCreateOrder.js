@@ -14,7 +14,7 @@ export default function useCreateOrder() {
     onSuccess: (data) => {
       // Invalidate và refetch cart query
       queryClient.invalidateQueries({ queryKey: ["cart"] });
-
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
       toast.success("Order created successfully!", {
         position: "top-right",
         autoClose: 3000,
