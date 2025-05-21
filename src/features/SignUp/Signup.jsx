@@ -9,7 +9,7 @@ function SignUp() {
 
   // Basic form state (optional, for completeness)
   const [formData, setFormData] = useState({
-    fullname: "",
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -37,6 +37,7 @@ function SignUp() {
       });
       return;
     }
+    console.log("Form data submitted:", formData);
     registerUser(formData);
   };
 
@@ -70,16 +71,16 @@ function SignUp() {
             {" "}
             {/* Increased margin */}
             <label
-              htmlFor="fullname"
+              htmlFor="name"
               className="block text-sm font-semibold text-gray-800 mb-1.5" // Bolder label
             >
               Họ và tên <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
-              id="fullname"
-              name="fullname"
-              value={formData.fullname}
+              id="name"
+              name="name"
+              value={formData.name}
               onChange={handleChange}
               placeholder="Input your full name"
               required
