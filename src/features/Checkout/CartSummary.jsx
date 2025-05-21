@@ -1,33 +1,78 @@
-import React from "react";
+// components/CartSummary.jsx
+import React, { useMemo } from "react";
+import { useFormContext, useWatch } from "react-hook-form";
 import useGetCart from "../../hooks/useGetCart";
+
+// Định nghĩa các strategy tính phí vận chuyển
+const shippingStrategies = {
+  "Fast Delivery": (items, totalPrice) => {
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+    return totalQuantity > 6 ? totalPrice * 0.25 : totalPrice * 0.2;
+  },
+  "Economy Delivery": (items, totalPrice) => {
+    const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
+    return totalQuantity > 6 ? totalPrice * 0.15 : totalPrice * 0.1;
+  },
+  "Pick up": () => 0,
+};
 
 function CartSummary() {
   const { cart } = useGetCart();
+  const { control } = useFormContext();
 
-  // Calculate basket data
-  const subtotal = cart.items.reduce(
-    (sum, item) => sum + item.foodItemId.price * item.quantity,
-    0
-  );
-  const memberDiscount = 0;
-  const deliveryFee = 0;
-  const total = subtotal - memberDiscount + deliveryFee;
-  const rewardPoints = Math.floor((total * 0.1) / 1000) * 10; // 10 points for every 1000 đ
-  const productCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-
-  const basketData = {
-    productCount,
-    subtotal,
-    memberDiscount,
-    deliveryFee,
-    total,
-    rewardPoints,
-  };
+  // Lấy phương thức vận chuyển từ form
+  const shippingMethod = useWatch({
+    control,
+    name: "shippingMethod",
+    defaultValue: "Economy Delivery",
+  });
 
   // Format currency with dot separator for thousands
   const formatCurrency = (amount) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   };
+
+  // Tính toán giá trị giỏ hàng
+  const basketData = useMemo(() => {
+    if (!cart || !cart.items || !cart.items.length) {
+      return {
+        productCount: 0,
+        subtotal: 0,
+        memberDiscount: 0,
+        deliveryFee: 0,
+        total: 0,
+        rewardPoints: 0,
+      };
+    }
+
+    // Tính tổng giá tiền đồ ăn
+    const subtotal = cart.items.reduce(
+      (sum, item) => sum + item.foodItemId.price * item.quantity,
+      0
+    );
+
+    // Tính phí vận chuyển dựa trên strategy
+    const deliveryFee = shippingStrategies[shippingMethod]
+      ? shippingStrategies[shippingMethod](cart.items, subtotal)
+      : 0;
+
+    const memberDiscount = 0;
+    const total = subtotal - memberDiscount + deliveryFee;
+    const rewardPoints = Math.floor((total * 0.1) / 1000) * 10; // 10 points for every 1000 đ
+    const productCount = cart.items.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+
+    return {
+      productCount,
+      subtotal,
+      memberDiscount,
+      deliveryFee,
+      total,
+      rewardPoints,
+    };
+  }, [cart, shippingMethod]);
 
   return (
     <div className="max-w-lg mx-auto p-4 bg-white rounded-2xl border border-gray-300 px-8 py-6">
@@ -52,7 +97,9 @@ function CartSummary() {
 
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <span className="text-gray-900 mr-1">Delivery fee</span>
+            <span className="text-gray-900 mr-1">
+              Delivery fee ({shippingMethod})
+            </span>
           </div>
           <span className="text-gray-900">
             {formatCurrency(basketData.deliveryFee)} đ
