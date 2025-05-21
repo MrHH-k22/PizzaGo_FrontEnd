@@ -50,3 +50,28 @@ export const updateOrderStatus = async (orderId, newStatus) => {
     throw error;
   }
 };
+
+export const createOrder = async (orderData) => {
+  try {
+    const response = await fetch(`${API_URL}/order/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // Include cookies for authentication
+      body: JSON.stringify(orderData),
+    });
+
+    if (!response.ok) {
+      throw {
+        message: response.statusText || "Cannot create order",
+      };
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error creating order:", error);
+    throw error;
+  }
+};

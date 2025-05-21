@@ -75,7 +75,7 @@ function CartSummary({ cart }) {
         </div>
       </div>
 
-      <CustomButton text="Check out" width="full" to="/checkout" />
+      <CustomButton text="Check out" width="full" to="/customer/checkout" />
     </div>
   );
 }

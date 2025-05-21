@@ -1,11 +1,27 @@
+import React from "react";
+import useGetCart from "../../hooks/useGetCart";
+
 function CartSummary() {
+  const { cart } = useGetCart();
+
+  // Calculate basket data
+  const subtotal = cart.items.reduce(
+    (sum, item) => sum + item.foodItemId.price * item.quantity,
+    0
+  );
+  const memberDiscount = 0;
+  const deliveryFee = 0;
+  const total = subtotal - memberDiscount + deliveryFee;
+  const rewardPoints = Math.floor((total * 0.1) / 1000) * 10; // 10 points for every 1000 đ
+  const productCount = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+
   const basketData = {
-    productCount: 1,
-    subtotal: 279000,
-    memberDiscount: 0,
-    deliveryFee: 0,
-    total: 279000,
-    rewardPoints: 27,
+    productCount,
+    subtotal,
+    memberDiscount,
+    deliveryFee,
+    total,
+    rewardPoints,
   };
 
   // Format currency with dot separator for thousands
@@ -34,20 +50,9 @@ function CartSummary() {
           </span>
         </div>
 
-        <div className="flex justify-between items-center mb-2">
-          <div className="flex items-center">
-            <span className="text-blue-600 mr-1">Member discount</span>
-            {/* <BiInfoCircle size={16} className="text-gray-400" /> */}
-          </div>
-          <span className="text-green-600">
-            {formatCurrency(basketData.memberDiscount)} đ
-          </span>
-        </div>
-
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <span className="text-blue-600 mr-1">Delivery fee</span>
-            {/* <Info size={16} className="text-gray-400" /> */}
+            <span className="text-gray-900 mr-1">Delivery fee</span>
           </div>
           <span className="text-gray-900">
             {formatCurrency(basketData.deliveryFee)} đ

@@ -17,6 +17,7 @@ export default function useLogIn() {
     mutationFn: (userData) => logIn(userData),
     onSuccess: (data) => {
       // Store user data in a single cookie
+      console.log("data", data);
       Cookies.set(
         "userData",
         JSON.stringify({
@@ -24,6 +25,7 @@ export default function useLogIn() {
           name: data.name,
           email: data.email,
           role: data.role,
+          address: data.address,
         }),
         { expires: 7 }
       );
@@ -40,6 +42,7 @@ export default function useLogIn() {
         name: data.name,
         email: data.email,
         role: data.role,
+        address: data.address,
       });
       // Annouce when success
       toast.success("Đăng nhập thành công.", {
