@@ -6,7 +6,7 @@ const API_URL = import.meta.env.VITE_BACKEND_URL;
 export const signupUser = async (data) => {
   try {
     const transformedData = {
-      fullName: data.fullname,
+      name: data.name,
       email: data.email,
       password: data.password,
       address: data.address,
