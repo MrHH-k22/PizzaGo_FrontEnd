@@ -9,10 +9,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import useGetOrders from "../../../hooks/useGetOrders";
 import useUpdateStatusOrder from "../../../hooks/useUpdateStatusOrder";
-
+import LoadindSpinner from "../../../components/LoadingSpinner";
 function UpdateOrderStatus() {
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { listorders, isLoading } = useGetOrders();
+  const [orders, setOrders] = useState(isLoading ? [] : listorders);
+  // const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -20,48 +21,30 @@ function UpdateOrderStatus() {
   const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState("asc");
   const { updateStatusOrder } = useUpdateStatusOrder();
-  const { orders: rawOrders } = useGetOrders();
-
-  useEffect(() => {
-    const fetchOrders = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Transform rawOrders to match the component's expected structure
-        if (rawOrders && rawOrders.length > 0) {
-          const transformedOrders = rawOrders.map((order) => ({
-            id: order._id,
-            customerName: order.customerId?.name || "Guest",
-            deliveryAddress: order.deliveryAddress,
-            status: capitalizeFirstLetter(order.status || "pending"),
-            itemCount: order.items?.length || 0,
-            totalBill: order.totalPrice || 0,
-            items: order.items || [],
-            note: order.note || "",
-            createdAt: new Date(order.createdAt).toLocaleString(),
-            updatedAt: new Date(order.updatedAt).toLocaleString(),
-          }));
-          setOrders(transformedOrders);
-        } else {
-          setOrders([]);
-        }
-      } catch (err) {
-        setError(err.message || "Could not fetch orders. Please try again.");
-        setOrders([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrders();
-  }, [rawOrders]);
-
-  // Helper function to capitalize status
+  console.log(orders);
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+  useEffect(() => {
+    if (!isLoading && listorders) {
+      const transformedOrders = listorders.map((order) => ({
+        id: order._id,
+        customerName: order.customerId?.name || "Guest",
+        deliveryAddress: order.deliveryAddress,
+        status: capitalizeFirstLetter(order.status || "pending"),
+        itemCount: order.items?.length || 0,
+        totalBill: order.totalPrice || 0,
+        items: order.items || [],
+        note: order.note || "",
+        createdAt: new Date(order.createdAt).toLocaleString(),
+        updatedAt: new Date(order.updatedAt).toLocaleString(),
+      }));
+      setOrders(transformedOrders);
+    }
+  }, [listorders, isLoading]);
+  if (isLoading) {
+    return <LoadindSpinner message="Loading users..." />;
+  }
 
   const handleStatusChange = (orderId, newStatus) => {
     // Cập nhật trạng thái cục bộ ngay lập tức để UI phản hồi nhanh
@@ -74,28 +57,6 @@ function UpdateOrderStatus() {
     // Gọi API để cập nhật status trên server
     updateStatusOrder(
       { orderId, newStatus },
-      {
-        onError: (error) => {
-          console.error("Failed to update order status:", error);
-
-          // Hoàn tác thay đổi cục bộ nếu API gọi thất bại
-          setOrders((prevOrders) =>
-            prevOrders.map((order) => {
-              if (order.id === orderId) {
-                // Tìm order gốc để khôi phục status
-                const originalOrder = rawOrders.find((o) => o._id === orderId);
-                return {
-                  ...order,
-                  status: capitalizeFirstLetter(
-                    originalOrder?.status || "pending"
-                  ),
-                };
-              }
-              return order;
-            })
-          );
-        },
-      }
     );
   };
 
@@ -131,17 +92,12 @@ function UpdateOrderStatus() {
     );
   };
 
-  const filteredOrders = orders.filter(
-    (order) =>
-      (order.customerName?.toLowerCase() || "").includes(searchQuery) ||
-      order.id.toLowerCase().includes(searchQuery)
+  const filteredOrders = orders.filter((order) =>
+  (order.customerName?.toLowerCase().includes(searchQuery) ||
+    order.id?.toLowerCase().includes(searchQuery))
   );
 
-  if (loading) {
-    return (
-      <div className="order-status-container loading">Loading orders...</div>
-    );
-  }
+  console.log("filteredOrders", filteredOrders);
 
   if (error) {
     return <div className="order-status-container error">Error: {error}</div>;

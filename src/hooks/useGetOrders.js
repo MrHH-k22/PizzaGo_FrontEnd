@@ -4,7 +4,7 @@ import { getOrders } from "../services/order.service";
 
 export default function useGetOrders() {
   const {
-    data: orders,
+    data: listorders,
     isLoading,
     isError,
     error,
@@ -24,16 +24,9 @@ export default function useGetOrders() {
     },
   });
 
-  // Return a function that provides the orders data
-  const getOrdersData = () => {
-    return orders || []; // Return empty array if data is not loaded yet
-  };
-
   return {
-    getOrders: getOrdersData,
-    orders,
+    listorders,
     isLoading,
-    isSuccess: !isLoading && !isError && !!orders,
     isError,
     error,
     refetch,
