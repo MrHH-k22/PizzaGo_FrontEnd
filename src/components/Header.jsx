@@ -24,15 +24,15 @@ function Header() {
     // Role-specific menu configurations
     const menuByRole = {
       Manager: [
-        { name: "Account", link: "/" },
+        { name: "Account", link: "/account" },
         { name: "Manager Dashboard", link: "/manager/manageusers" },
       ],
       Staff: [
-        { name: "Account", link: "/" },
+        { name: "Account", link: "/account" },
         { name: "Staff Manager", link: "/staff/updateorderstatus" },
       ],
       Customer: [
-        { name: "Account", link: "/" },
+        { name: "Account", link: "/account" },
         { name: "Order Tracking", link: "/" },
       ],
     };

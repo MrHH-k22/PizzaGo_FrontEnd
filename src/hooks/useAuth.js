@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
+import { getUserInfo } from "../services/user.service";
 
 export function useAuth() {
   // Try to get user data from cookies
@@ -15,6 +16,14 @@ export function useAuth() {
     return null;
   };
 
+  const updateUserInCookies = (user) => {
+    if (user) {
+      Cookies.set("userData", JSON.stringify(user), { expires: 7 });
+    } else {
+      Cookies.remove("userData");
+    }
+  };
+
   const [user, setUser] = useState(getUserFromCookies());
 
   // Function to handle logout
@@ -28,5 +37,22 @@ export function useAuth() {
     setUser(null);
   };
 
-  return { user, setUser, clearUser, logout };
+  const getUserFromDatabase = async (userId) => {
+    try {
+      const data = await getUserInfo(userId);
+      setUser(data);
+      updateUserInCookies(data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
+  return {
+    user,
+    setUser,
+    clearUser,
+    logout,
+    updateUserInCookies,
+    getUserFromDatabase,
+  };
 }

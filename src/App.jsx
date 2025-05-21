@@ -7,6 +7,7 @@ import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
 import SignUp from "./features/SignUp/Signup";
 import Cart from "./features/Cart/Cart";
+import Account from "./features/Account/Account";
 import StaffLayout from "./layouts/StaffLayout";
 import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
 import Checkout from "./features/Checkout/Checkout";
@@ -88,6 +89,11 @@ const router = createBrowserRouter([
         path: "/logout",
         element: <Logout />,
       },
+
+      {
+        path: "/account",
+        element: <Account />,
+      },
     ],
   },
   {
@@ -142,7 +148,7 @@ const router = createBrowserRouter([
           {
             path: "managestaffs",
             element: <ManageStaffs />,
-          }
+          },
         ],
       },
     ],
