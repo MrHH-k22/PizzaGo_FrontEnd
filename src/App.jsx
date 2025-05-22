@@ -14,6 +14,7 @@ import Checkout from "./features/Checkout/Checkout";
 import Logout from "./features/LogOut/Logout";
 import ManageUsers from "./features/Manager/ManageAccounts/ManageUsers";
 import ManageStaffs from "./features/Manager/ManageAccounts/ManageStaffs";
+import OrderTrackingPage from "./features/OrderTracking/OrderTrackingPage";
 const staffMenuItems = [
   {
     href: "/staff/updateorderstatus",
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
           {
             path: "checkout",
             element: <Checkout />,
+          },
+          {
+            path: "order-tracking",
+            element: <OrderTrackingPage />,
           },
         ],
       },

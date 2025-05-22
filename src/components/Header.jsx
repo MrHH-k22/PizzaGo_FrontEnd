@@ -8,13 +8,8 @@ import useGetCart from "../hooks/useGetCart";
 
 function Header() {
   const [tabOpen, setTabOpen] = useState(null);
-  const { cart, isLoading, isError, error } = useGetCart();
 
   const { user } = useAuth();
-  const totalQuantity =
-    user && cart?.items
-      ? cart.items.reduce((total, item) => total + item.quantity, 0)
-      : 0;
 
   // Dynamic menu items based on authentication status
   const getMenuItems = () => {
@@ -55,9 +50,6 @@ function Header() {
     ];
   };
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error: {error.message}</div>;
-
   return (
     <header className="relative rounded-b-3xl mx-auto w-full max-w-screen-xl flex items-center justify-between px-12 py-14 bg-white shadow-sm h-24 ">
       {/* Name Section */}
@@ -80,10 +72,9 @@ function Header() {
       <div className="flex items-center gap-6 text-xl">
         <Link
           to="/customer/cart"
-          className="flex items-center justify-center gap-2 py-3 px-6 border-2 border-red-600 bg-red-600 text-white rounded-full text-base hover:bg-white hover:text-red-600 transition duration-300 ease-in-out"
+          className="flex items-center justify-center gap-2 py-3 px-7 border-2 border-red-600 bg-red-600 text-white rounded-full text-base hover:bg-white hover:text-red-600 transition duration-300 ease-in-out"
         >
-          <span className="font-semibold">{totalQuantity}</span>
-          <FaCartShopping size={18} />
+          <FaCartShopping size={20} />
         </Link>
 
         <DropDownLink
@@ -91,7 +82,7 @@ function Header() {
           items={getMenuItems()}
           tabOpen={tabOpen}
           setTabOpen={setTabOpen}
-          icon={<FiMenu />}
+          icon={<FiMenu size={20} />}
         />
       </div>
     </header>
