@@ -4,10 +4,17 @@ import { FiMenu } from "react-icons/fi";
 import { useState } from "react";
 import DropDownLink from "./DropDownLink";
 import { useAuth } from "../hooks/useAuth";
+import useGetCart from "../hooks/useGetCart";
 
 function Header() {
   const [tabOpen, setTabOpen] = useState(null);
+  const { cart, isLoading, isError, error } = useGetCart();
+
   const { user } = useAuth();
+  const totalQuantity =
+    user && cart?.items
+      ? cart.items.reduce((total, item) => total + item.quantity, 0)
+      : 0;
 
   // Dynamic menu items based on authentication status
   const getMenuItems = () => {
@@ -48,6 +55,9 @@ function Header() {
     ];
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isError) return <div>Error: {error.message}</div>;
+
   return (
     <header className="relative rounded-b-3xl mx-auto w-full max-w-screen-xl flex items-center justify-between px-12 py-14 bg-white shadow-sm h-24 ">
       {/* Name Section */}
@@ -72,7 +82,7 @@ function Header() {
           to="/customer/cart"
           className="flex items-center justify-center gap-2 py-3 px-6 border-2 border-red-600 bg-red-600 text-white rounded-full text-base hover:bg-white hover:text-red-600 transition duration-300 ease-in-out"
         >
-          <span className="font-semibold">1</span>
+          <span className="font-semibold">{totalQuantity}</span>
           <FaCartShopping size={18} />
         </Link>
 

@@ -116,11 +116,11 @@ function CartSummary() {
           </span>
         </div>
 
-        <div className="text-sm text-gray-500 text-right">
+        {/* <div className="text-sm text-gray-500 text-right">
           Get{" "}
           <span className="font-medium">{basketData.rewardPoints} points</span>{" "}
           <span className="text-red-500">Hut rewards</span>
-        </div>
+        </div> */}
       </div>
     </div>
   );
