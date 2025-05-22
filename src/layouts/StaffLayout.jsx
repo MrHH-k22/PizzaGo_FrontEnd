@@ -7,9 +7,8 @@ function StaffLayout({ menuItems }) {
     <div className="grid h-screen grid-cols-[250px_1fr] mx-auto">
       <SideBar menuItems={menuItems} className="h-full" />
       <div className="flex flex-col h-full">
-        
         <div className="flex-1 overflow-auto">
-          <main className="mx-auto max-w-7xl">
+          <main className="mx-auto w-full">
             <Outlet />
           </main>
         </div>
