@@ -24,6 +24,7 @@ export default function useLogIn() {
           name: data.name,
           email: data.email,
           role: data.role,
+          address: data.address,
         }),
         { expires: 7 }
       );
@@ -40,6 +41,7 @@ export default function useLogIn() {
         name: data.name,
         email: data.email,
         role: data.role,
+        address: data.address,
       });
       // Annouce when success
       toast.success("Đăng nhập thành công.", {
