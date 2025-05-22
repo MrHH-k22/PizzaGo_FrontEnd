@@ -2,8 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { getCart } from "../services/cart.service";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "./useAuth";
 
 export default function useGetCart() {
+  const { user } = useAuth();
   const {
     data: cart,
     isLoading,
@@ -13,6 +15,8 @@ export default function useGetCart() {
   } = useQuery({
     queryKey: ["cart"],
     queryFn: getCart,
+    // Skip executing the query for unauthenticated users
+    enabled: !!user,
     onError: (error) => {
       console.log("error status", error);
       toast.error(`Failed to fetch cart: ${error.message}`, {
@@ -27,7 +31,7 @@ export default function useGetCart() {
   });
 
   return {
-    cart,
+    cart: cart || { items: [] },
     isLoading,
     isError,
     error,

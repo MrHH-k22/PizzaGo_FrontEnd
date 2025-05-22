@@ -14,12 +14,10 @@ function CartSummary({ cart }) {
     return cart.items.reduce((total, item) => total + item.quantity, 0);
   };
 
-  const deliveryFee = 20000;
-
   // Calculate dynamically
   const totalItemCost = calculateTotalItemCost();
   const totalQuantity = calculateTotalQuantity();
-  const totalAmount = totalItemCost + deliveryFee;
+  const totalAmount = totalItemCost;
 
   const formatPrice = (price) => new Intl.NumberFormat("vi-VN").format(price);
 
@@ -55,9 +53,7 @@ function CartSummary({ cart }) {
               <p className="whitespace-nowrap">Delivery fee</p>
             </div>
             <div className="text-right">
-              <p className="text-base font-semibold whitespace-nowrap">
-                {formatPrice(deliveryFee)} đ
-              </p>
+              <p className="text-base font-semibold whitespace-nowrap">__</p>
             </div>
           </div>
         </div>

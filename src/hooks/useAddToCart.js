@@ -1,9 +1,10 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 import { addToCartService } from "../services/cart.service";
 import { useNavigate } from "react-router-dom";
 
 export default function useAddToCart() {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const {
     mutate: addToCartMutation,
@@ -15,6 +16,7 @@ export default function useAddToCart() {
   } = useMutation({
     mutationFn: (data) => addToCartService(data.foodId, data.quantity),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
       toast.success("Thêm vào giỏ hàng thành công.", {
         position: "top-right",
         autoClose: 3000,
