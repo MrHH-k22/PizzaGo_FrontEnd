@@ -4,9 +4,11 @@ import { FiMenu } from "react-icons/fi";
 import { useState } from "react";
 import DropDownLink from "./DropDownLink";
 import { useAuth } from "../hooks/useAuth";
+import useGetCart from "../hooks/useGetCart";
 
 function Header() {
   const [tabOpen, setTabOpen] = useState(null);
+
   const { user } = useAuth();
 
   // Dynamic menu items based on authentication status
@@ -24,16 +26,16 @@ function Header() {
     // Role-specific menu configurations
     const menuByRole = {
       Manager: [
-        { name: "Account", link: "/" },
+        { name: "Account", link: "/account" },
         { name: "Manager Dashboard", link: "/manager/manageusers" },
       ],
       Staff: [
-        { name: "Account", link: "/" },
+        { name: "Account", link: "/account" },
         { name: "Staff Manager", link: "/staff/updateorderstatus" },
       ],
       Customer: [
-        { name: "Account", link: "/" },
-        { name: "Order Tracking", link: "/" },
+        { name: "Account", link: "/account" },
+        { name: "Order Tracking", link: "/customer/trackorder" },
       ],
     };
 
@@ -70,10 +72,9 @@ function Header() {
       <div className="flex items-center gap-6 text-xl">
         <Link
           to="/customer/cart"
-          className="flex items-center justify-center gap-2 py-3 px-6 border-2 border-red-600 bg-red-600 text-white rounded-full text-base hover:bg-white hover:text-red-600 transition duration-300 ease-in-out"
+          className="flex items-center justify-center gap-2 py-3 px-7 border-2 border-red-600 bg-red-600 text-white rounded-full text-base hover:bg-white hover:text-red-600 transition duration-300 ease-in-out"
         >
-          <span className="font-semibold">1</span>
-          <FaCartShopping size={18} />
+          <FaCartShopping size={20} />
         </Link>
 
         <DropDownLink
@@ -81,7 +82,7 @@ function Header() {
           items={getMenuItems()}
           tabOpen={tabOpen}
           setTabOpen={setTabOpen}
-          icon={<FiMenu />}
+          icon={<FiMenu size={20} />}
         />
       </div>
     </header>

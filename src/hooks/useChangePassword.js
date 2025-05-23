@@ -1,21 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-toastify";
-import { editUser } from "../services/user.service";
+import { changePassword } from "../services/user.service";
 
-export default function useEditUser() {
+export default function useChangePassword() {
   const queryClient = useQueryClient();
+
   const {
-    mutate: editUserMutation,
-    isLoading: isEditingUser,
+    mutate: changePasswordMutation,
+    isLoading: isChangingPassword,
     isError,
     isSuccess,
     error,
     data,
   } = useMutation({
-    mutationFn: (userData) => editUser(userData),
-    onSuccess: (data) => {
+    mutationFn: (passwordData) => changePassword(passwordData),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["users"] });
-      toast.success("User updated successfully.", {
+      toast.success("Password changed successfully.", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -25,7 +26,7 @@ export default function useEditUser() {
       });
     },
     onError: (error) => {
-      toast.error(`Failed to update user: ${error.message}`, {
+      toast.error(`Failed to change password: ${error.message}`, {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -37,8 +38,8 @@ export default function useEditUser() {
   });
 
   return {
-    editUserMutation,
-    isEditingUser,
+    changePasswordMutation,
+    isChangingPassword,
     isSuccess,
     isError,
     error,

@@ -34,7 +34,7 @@ function ManageUsers() {
     return <LoadindSpinner message="Loading users..." />;
   }
   const handleAddUser = (newUser) => {
-    console.log(newUser);
+    // console.log(newUser);
     if (newUser) {
       const userWithRole = {
         ...newUser,

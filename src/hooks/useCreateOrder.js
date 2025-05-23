@@ -23,7 +23,7 @@ export default function useCreateOrder() {
         pauseOnHover: true,
         draggable: true,
       });
-      navigate("/customer/cart");
+      navigate("/");
     },
     onError: (error) => {
       toast.error(`Failed to create order: ${error.message}`, {

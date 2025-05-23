@@ -7,13 +7,17 @@ import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
 import SignUp from "./features/SignUp/Signup";
 import Cart from "./features/Cart/Cart";
+import TrackOrder from "./features/TrackOrder/TrackOrder";
+import Account from "./features/Account/Account";
 import StaffLayout from "./layouts/StaffLayout";
 import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
 import Checkout from "./features/Checkout/Checkout";
 import Logout from "./features/LogOut/Logout";
 import ManageUsers from "./features/Manager/ManageAccounts/ManageUsers";
-import ManageStaffs from "./features/Manager/ManageAccounts/ManageStaffs";
+import ManageStaffs from "./feat
 import ManageFoodMenu from "./features/Manager/ManageFoods/ManageFoodMenu";
+import OrderTrackingPage from "./features/OrderTracking/OrderTrackingPage";
+
 const staffMenuItems = [
   {
     href: "/staff/updateorderstatus",
@@ -89,6 +93,11 @@ const router = createBrowserRouter([
         path: "/logout",
         element: <Logout />,
       },
+
+      {
+        path: "/account",
+        element: <Account />,
+      },
     ],
   },
   {
@@ -106,6 +115,14 @@ const router = createBrowserRouter([
           {
             path: "checkout",
             element: <Checkout />,
+          },
+          {
+            path: "trackorder",
+            element: <TrackOrder />,
+          },
+          {
+            path: "order-tracking",
+            element: <OrderTrackingPage />,
           },
         ],
       },
@@ -148,6 +165,7 @@ const router = createBrowserRouter([
             path: "managefoodmenu",
             element: <ManageFoodMenu />,
           }
+
         ],
       },
     ],

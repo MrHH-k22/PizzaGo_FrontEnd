@@ -1,17 +1,13 @@
-import { useState } from "react";
+// components/DeliveryInfo.jsx
 import { useFormContext } from "react-hook-form";
 
-// const deliveryMethods = ["Economy Delivery", "Fast Delivery", "Pick up"];
+const deliveryMethods = ["Fast Delivery", "Economy Delivery", "Pick up"];
 
 function DeliveryInfo({ user }) {
-  const [note, setNote] = useState("");
-  const [deliveryAddress, setdeliveryAddresse] = useState(user?.address || "");
   const {
     register,
     formState: { errors },
   } = useFormContext();
-  // const [timeOption, setTimeOption] = useState(deliveryMethods[0]);
-  // const [isTimeDropdownOpen, setIsTimeDropdownOpen] = useState(false);
 
   return (
     <div className="px-8 py-6 md-min-h-fit bg-white md:border border-gray-300 rounded-2xl mb-4">
@@ -29,6 +25,9 @@ function DeliveryInfo({ user }) {
             required: "Delivery address is required",
           })}
         />
+        {errors.deliveryAddress && (
+          <span className="text-red-500">{errors.deliveryAddress.message}</span>
+        )}
       </div>
 
       <div className="mb-4">
@@ -41,36 +40,31 @@ function DeliveryInfo({ user }) {
         />
       </div>
 
-      {/* <div>
+      <div>
         <p className="text-xl font-semibold text-gray-800 mb-4">
           Delivery method
         </p>
         <div className="relative">
-          <button
-            className="w-full p-3 border border-gray-300 rounded-md text-left text-gray-800 flex justify-between items-center"
-            onClick={() => setIsTimeDropdownOpen(!isTimeDropdownOpen)}
+          <select
+            className="w-full p-3 border border-gray-300 rounded-md text-gray-800"
+            {...register("shippingMethod", {
+              required: "Shipping method is required",
+            })}
+            defaultValue="Economy Delivery"
           >
-            <span>{timeOption}</span>
-          </button>
-
-          {isTimeDropdownOpen && (
-            <div className="absolute left-0 right-0 mt-2 bg-white border border-gray-200 rounded-md shadow-lg z-10">
-              {deliveryMethods.map((option) => (
-                <div
-                  key={option}
-                  className="p-3 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-                    setTimeOption(option);
-                    setIsTimeDropdownOpen(false);
-                  }}
-                >
-                  {option}
-                </div>
-              ))}
-            </div>
+            {deliveryMethods.map((method) => (
+              <option key={method} value={method}>
+                {method}
+              </option>
+            ))}
+          </select>
+          {errors.shippingMethod && (
+            <span className="text-red-500">
+              {errors.shippingMethod.message}
+            </span>
           )}
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
