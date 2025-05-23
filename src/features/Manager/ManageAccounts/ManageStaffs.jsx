@@ -101,6 +101,7 @@ function ManageStaffs() {
         {/* Header */}
         <HeaderManager
           title="Manage Staff"
+          description="Add, edit, or delete staff members."
           buttonText="Add New Staff"
           buttonIcon={Plus}
           onButtonClick={openAddModal}

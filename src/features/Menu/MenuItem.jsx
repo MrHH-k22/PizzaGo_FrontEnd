@@ -26,7 +26,7 @@ function MenuItem({ foodItem, toggleModal, handleFoodSelect }) {
 
   return (
     <div
-      className="group flex rounded-lg border border-gray-300 bg-white overflow-hidden w-full transition-shadow duration-300 hover:shadow-xl"
+      className="group h-55 flex rounded-lg border border-gray-300 bg-white overflow-hidden w-full transition-shadow duration-300 hover:shadow-xl"
       onClick={() => handleFoodClick()}
     >
       {/* Phần hình ảnh bên trái */}

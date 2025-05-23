@@ -51,13 +51,15 @@ function SideBar({ menuItems, children }) {
           <div className="px-4 py-5 overflow-y-auto">
             {/* Logo Section with enhanced styling */}
             <div className="flex justify-center mb-8">
-              <div className="bg-white p-2 rounded-xl shadow-md">
-                <img
-                  src="/imgs/Logo.png"
-                  alt="PizzaGo Logo"
-                  className="h-24 object-contain"
-                />
-              </div>
+              <Link to={"/"}>
+                <div className="bg-white p-2 rounded-xl shadow-md">
+                  <img
+                    src="/imgs/Logo.png"
+                    alt="PizzaGo Logo"
+                    className="h-24 object-contain"
+                  />
+                </div>
+              </Link>
             </div>
             
             {/* Divider */}

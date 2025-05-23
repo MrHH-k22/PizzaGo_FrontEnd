@@ -104,6 +104,7 @@ function ManageUsers() {
         {/* Header */}
         <HeaderManager
           title="Manage Users"
+          description="Add, edit, or delete users from the system."
           buttonText="Add New User"
           buttonIcon={Plus}
           onButtonClick={openAddModal}
