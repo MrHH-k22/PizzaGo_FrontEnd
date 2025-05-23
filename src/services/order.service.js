@@ -75,3 +75,27 @@ export const createOrder = async (orderData) => {
     throw error;
   }
 };
+
+export const getOrdersByCustomerId = async (customerId) => {
+  try {
+    const response = await fetch(`${API_URL}/order/getOrdersByCustomerId`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ customerId }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw { message: data.message || "Không thể lấy thông tin đơn hàng" };
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Get orders error:", error);
+    const errMsg = error.message || "Không thể lấy thông tin đơn hàng";
+    throw { message: errMsg };
+  }
+};

@@ -1,4 +1,5 @@
 import React from "react";
+import { getImagePath } from "../../../utils/helpers";
 
 function OrderDetailsModal({ order, onClose }) {
   // If no order is provided, don't render the modal
@@ -52,7 +53,7 @@ function OrderDetailsModal({ order, onClose }) {
               >
                 <div className="flex items-center space-x-4">
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL_IMAGE}/${item.foodItemId.image}`}
+                    src={getImagePath(item.foodItemId.image)}
                     alt={item.foodItemId.name}
                     className="h-16 w-16 object-cover rounded-md"
                   />
