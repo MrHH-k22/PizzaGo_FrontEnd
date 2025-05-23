@@ -14,7 +14,7 @@ import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderSta
 import Checkout from "./features/Checkout/Checkout";
 import Logout from "./features/LogOut/Logout";
 import ManageUsers from "./features/Manager/ManageAccounts/ManageUsers";
-import ManageStaffs from "./feat
+import ManageStaffs from "./features/Manager/ManageAccounts/ManageStaffs";
 import ManageFoodMenu from "./features/Manager/ManageFoods/ManageFoodMenu";
 import OrderTrackingPage from "./features/OrderTracking/OrderTrackingPage";
 
