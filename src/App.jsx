@@ -14,8 +14,10 @@ import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderSta
 import Checkout from "./features/Checkout/Checkout";
 import Logout from "./features/LogOut/Logout";
 import ManageUsers from "./features/Manager/ManageAccounts/ManageUsers";
-import ManageStaffs from "./features/Manager/ManageAccounts/ManageStaffs";
+import ManageStaffs from "./feat
+import ManageFoodMenu from "./features/Manager/ManageFoods/ManageFoodMenu";
 import OrderTrackingPage from "./features/OrderTracking/OrderTrackingPage";
+
 const staffMenuItems = [
   {
     href: "/staff/updateorderstatus",
@@ -159,6 +161,11 @@ const router = createBrowserRouter([
             path: "managestaffs",
             element: <ManageStaffs />,
           },
+          {
+            path: "managefoodmenu",
+            element: <ManageFoodMenu />,
+          }
+
         ],
       },
     ],
