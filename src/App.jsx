@@ -7,6 +7,7 @@ import Homepage from "./features/Homepage";
 import LogIn from "./features/LogIn/Login";
 import SignUp from "./features/SignUp/Signup";
 import Cart from "./features/Cart/Cart";
+import TrackOrder from "./features/TrackOrder/TrackOrder";
 import Account from "./features/Account/Account";
 import StaffLayout from "./layouts/StaffLayout";
 import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
@@ -112,6 +113,10 @@ const router = createBrowserRouter([
           {
             path: "checkout",
             element: <Checkout />,
+          },
+          {
+            path: "trackorder",
+            element: <TrackOrder />,
           },
           {
             path: "order-tracking",

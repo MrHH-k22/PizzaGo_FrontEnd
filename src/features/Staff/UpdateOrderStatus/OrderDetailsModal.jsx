@@ -1,11 +1,12 @@
 import React from "react";
+import { getImagePath } from "../../../utils/helpers";
 
 function OrderDetailsModal({ order, onClose }) {
   // If no order is provided, don't render the modal
   if (!order) {
     return null;
   }
-  console.log(order);
+  console.log("Order data for modal:", order);
   // Function to get status color based on order status
   const getStatusColor = (status) => {
     const statusLower = status.toLowerCase();
@@ -52,7 +53,7 @@ function OrderDetailsModal({ order, onClose }) {
               >
                 <div className="flex items-center space-x-4">
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL_IMAGE}/${item.foodItemId.image}`}
+                    src={getImagePath(item.foodItemId.image)}
                     alt={item.foodItemId.name}
                     className="h-16 w-16 object-cover rounded-md"
                   />
@@ -90,10 +91,26 @@ function OrderDetailsModal({ order, onClose }) {
               <strong className="text-gray-700">Customer:</strong>
               <span className="text-gray-800">{order.customerName}</span>
             </p>
+            {order.customerEmail && (
+              <p className="flex flex-wrap justify-between">
+                <strong className="text-gray-700">Email:</strong>
+                <span className="text-gray-800">{order.customerEmail}</span>
+              </p>
+            )}
             <p className="flex flex-wrap justify-between">
               <strong className="text-gray-700">Delivery Address:</strong>
               <span className="text-gray-800">{order.deliveryAddress}</span>
             </p>
+            <p className="flex flex-wrap justify-between">
+              <strong className="text-gray-700">Customer Note:</strong>
+              <span className="text-gray-800">{order.note}</span>
+            </p>
+            {order.shippingMethod && (
+              <p className="flex flex-wrap justify-between">
+                <strong className="text-gray-700">Shipping Method:</strong>
+                <span className="text-gray-800">{order.shippingMethod}</span>
+              </p>
+            )}
             <p className="flex flex-wrap justify-between items-center">
               <strong className="text-gray-700">Status:</strong>
               <span
@@ -102,6 +119,22 @@ function OrderDetailsModal({ order, onClose }) {
                 {order.status}
               </span>
             </p>
+            {order.totalFoodPrice !== undefined && (
+              <p className="flex flex-wrap justify-between">
+                <strong className="text-gray-700">Food Total:</strong>
+                <span className="text-gray-800">
+                  {Number(order.totalFoodPrice).toLocaleString("vi-VN")} VND
+                </span>
+              </p>
+            )}
+            {order.shippingCost !== undefined && (
+              <p className="flex flex-wrap justify-between">
+                <strong className="text-gray-700">Shipping Cost:</strong>
+                <span className="text-gray-800">
+                  {Number(order.shippingCost).toLocaleString("vi-VN")} VND
+                </span>
+              </p>
+            )}
             <p className="flex flex-wrap justify-between">
               <strong className="text-gray-700">Total Bill:</strong>
               <span className="text-gray-800 font-bold">

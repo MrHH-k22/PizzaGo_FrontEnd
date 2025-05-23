@@ -35,7 +35,7 @@ function Header() {
       ],
       Customer: [
         { name: "Account", link: "/account" },
-        { name: "Order Tracking", link: "/" },
+        { name: "Order Tracking", link: "/customer/trackorder" },
       ],
     };
 

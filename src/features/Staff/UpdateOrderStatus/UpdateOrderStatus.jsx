@@ -26,6 +26,8 @@ function UpdateOrderStatus() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(7);
 
+  console.log("listorders", listorders);
+
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -35,6 +37,8 @@ function UpdateOrderStatus() {
       const transformedOrders = listorders.map((order) => ({
         id: order._id,
         customerName: order.customerId?.name || "Guest",
+        customerEmail: order.customerId?.email || "",
+        customerId: order.customerId?._id || "",
         deliveryAddress: order.deliveryAddress,
         status: capitalizeFirstLetter(order.status || "pending"),
         itemCount: order.items?.length || 0,
@@ -43,6 +47,9 @@ function UpdateOrderStatus() {
         note: order.note || "",
         createdAt: new Date(order.createdAt).toLocaleString(),
         updatedAt: new Date(order.updatedAt).toLocaleString(),
+        shippingMethod: order.shippingMethod || "",
+        shippingCost: order.shippingCost || 0,
+        totalFoodPrice: order.totalFoodPrice || 0,
       }));
       setOrders(transformedOrders);
     }
