@@ -2,7 +2,8 @@ import { useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import AddNewCard from './AddNewCard';
 import { getImagePath } from '../utils/helpers';
-export default function FoodItemCarousel({ title, items, onAddNew, addNewText = "Add new item" }) {
+
+export default function FoodItemCarousel({ title, items, onAddNew, onItemClick, addNewText = "Add new item" }) {
   const scrollContainerRef = useRef(null);
   const scrollStep = 320; 
   
@@ -64,8 +65,9 @@ export default function FoodItemCarousel({ title, items, onAddNew, addNewText = 
           {/* Regular food items with enhanced hover effects */}
           {items.map((item) => (
             <div 
-              key={item.id} 
+              key={item._id} 
               className="group w-40 h-40 flex-shrink-0 rounded-2xl overflow-hidden bg-white border border-transparent hover:border-orange-300 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer"
+              onClick={() => onItemClick && onItemClick(item)}
             >
               <div className="w-full h-24 relative overflow-hidden">
                 <img 

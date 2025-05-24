@@ -72,3 +72,48 @@ export const addFoodItem = async (itemData) => {
     throw error;
   }
 };
+export const editFoodItem = async (itemData) => {
+  try {
+    console.log("Editing food item:", itemData);
+    const formData = new FormData();
+    Object.keys(itemData).forEach(key => {
+      if (key !== 'image' || !itemData[key]) {
+        formData.append(key, itemData[key]);
+      }
+    });
+    if (itemData.image && itemData.image instanceof File) {
+      formData.append('image', itemData.image, itemData.image.name);
+    }
+    const response = await fetch(`${API_URL}/foodItem/editFoodItem`, {
+      method: "PATCH",
+      body: formData
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to edit food item");
+    } 
+    return data;
+  } catch (error) {
+    console.error("Error editing food item:", error);
+    throw error;
+  }
+}
+export const deleteFoodItem = async (itemId) => {
+  try {
+    const response = await fetch(`${API_URL}/foodItem/deleteFoodItem`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ itemId }),
+    });
+    const data = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to delete food item");
+    }
+    return data;
+  } catch (error) {
+    console.error("Error deleting food item:", error);
+    throw error;
+  }
+}
