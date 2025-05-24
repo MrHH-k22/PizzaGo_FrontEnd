@@ -10,7 +10,7 @@ import Cart from "./features/Cart/Cart";
 import TrackOrder from "./features/TrackOrder/TrackOrder";
 import Account from "./features/Account/Account";
 import StaffLayout from "./layouts/StaffLayout";
-import UpdateOrderStatus from "./features/staff/UpdateOrderStatus/UpdateOrderStatus";
+import UpdateOrderStatus from "./features/Staff/UpdateOrderStatus/UpdateOrderStatus";
 import Checkout from "./features/Checkout/Checkout";
 import Logout from "./features/LogOut/Logout";
 import ManageUsers from "./features/Manager/ManageAccounts/ManageUsers";
@@ -164,8 +164,7 @@ const router = createBrowserRouter([
           {
             path: "managefoodmenu",
             element: <ManageFoodMenu />,
-          }
-
+          },
         ],
       },
     ],
