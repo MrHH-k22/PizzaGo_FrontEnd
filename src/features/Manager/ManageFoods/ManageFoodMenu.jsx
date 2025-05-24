@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo, use } from 'react';
+import { toast } from 'react-toastify'; // Assuming you're using react-toastify for notifications
 import HeaderManager from "../../../components/HeaderManager";
 import FoodCategoriesBar from "../../../components/FoodCategoriesBar";
 import FoodItemCarousel from "../../../components/FoodItemCarousel";
@@ -6,6 +7,8 @@ import AddItemModal from "../../../components/AddItemModal";
 import useAddFoodItem from '../../../hooks/useAddFoodItem';
 import useGetCategory from '../../../hooks/useGetCategory';
 import useGetFoodItems from '../../../hooks/useGetFoodItem';
+import useEditFoodItem from '../../../hooks/useEditFoodItem';
+import useDeleteFoodItem from '../../../hooks/useDeleteFoodItem';
 function ManageFoodMenu() {
     const { categories, isLoading: isCategoriesLoading, error: categoriesError } = useGetCategory();
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -22,6 +25,8 @@ function ManageFoodMenu() {
     const [isEditMode, setIsEditMode] = useState(false);
     const { foodItems: listFoods, isLoading: isFoodItemsLoading, error: foodItemsError } = useGetFoodItems();
     const { addNewFoodItem, isAddingFoodItem } = useAddFoodItem();
+    const { editFoodItemMutation, isEditingFoodItem } = useEditFoodItem();
+    const { deleteFoodItemMutation, isDeletingFoodItem } = useDeleteFoodItem();
     const [pizzaItems, setPizzaItems] = useState([]);
     const [foodItems, setFoodItems] = useState([]);
     const [drinksItems, setDrinksItems] = useState([]);
@@ -69,7 +74,9 @@ function ManageFoodMenu() {
     
     const handleEditItem = (itemData) => {
         console.log("Editing item:", itemData);
-        // Add your API call or state update logic here
+        if(itemData){
+            editFoodItemMutation(itemData);
+        }
     };
     
     // Logic to determine which categories to show
@@ -81,6 +88,31 @@ function ManageFoodMenu() {
     const showDrinks = showAll || selectedCategories.includes('drinks');
     const showVegetarian = showAll || selectedCategories.includes('vegetarian');
 
+    // Add this new handler for item clicks
+    const handleItemClick = (item) => {
+        // First close any open modal
+        if (isModalOpen) {
+            setIsModalOpen(false);
+
+            // Use setTimeout to ensure state updates complete before reopening
+            setTimeout(() => {
+                setEditingItem(item);
+                setIsEditMode(true);
+                setIsModalOpen(true);
+            }, 50);
+        } else {
+            // Direct open if no modal is currently shown
+            setEditingItem(item);
+            setIsEditMode(true);
+            setIsModalOpen(true);
+        }
+    };
+    const handleDeleteItem = (item) => {
+        if (item && item._id) {
+            deleteFoodItemMutation(item._id);
+        }
+    };
+    
     return (
         <div className="bg-gray-50 min-h-screen p-6">
             <div className="max-w-6xl mx-auto">
@@ -102,6 +134,7 @@ function ManageFoodMenu() {
                                 title="Pizzas"
                                 items={pizzaItems}
                                 onAddNew={openAddNewPizzaModal}
+                                onItemClick={handleItemClick}
                                 addNewText="Add new pizza"
                             />
                         </div>
@@ -116,6 +149,7 @@ function ManageFoodMenu() {
                                 title="Foods"
                                 items={foodItems}
                                 onAddNew={openAddNewFoodModal}
+                                onItemClick={handleItemClick}
                                 addNewText="Add new food"
                             />
                         </div>
@@ -130,6 +164,7 @@ function ManageFoodMenu() {
                                 title="Drinks"
                                 items={drinksItems} 
                                 onAddNew={openAddNewDrinkModal}
+                                onItemClick={handleItemClick}
                                 addNewText="Add new drink" 
                             />
                         </div>
@@ -144,6 +179,7 @@ function ManageFoodMenu() {
                                 title="Vegetarian"
                                 items={vegetarianItems}
                                 onAddNew={openAddNewVegetarianModal}
+                                onItemClick={handleItemClick}
                                 addNewText="Add new vegetarian"
                             />
                         </div>
@@ -153,9 +189,13 @@ function ManageFoodMenu() {
             
             <AddItemModal
                 isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
+                onClose={() => {
+                    setIsModalOpen(false);
+                    setEditingItem(null);
+                }}
                 onAddItem={handleAddItem}
                 onEditItem={handleEditItem}
+                onDeleteItem={handleDeleteItem}
                 initialData={editingItem}
                 isEditMode={isEditMode}
                 categories={editingItem ? [editingItem.category] : []}

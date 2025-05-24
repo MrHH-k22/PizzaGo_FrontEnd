@@ -52,9 +52,21 @@ function ManageUsers() {
   };
 
   const openEditModal = (user) => {
-    setEditingUser(user);
-    setIsEditMode(true);
-    setIsModalOpen(true);
+    if (isModalOpen) {
+      setIsModalOpen(false);
+
+      // Short timeout to ensure state updates before reopening
+      setTimeout(() => {
+        setEditingUser(user);
+        setIsEditMode(true);
+        setIsModalOpen(true);
+      }, 50);
+    } else {
+      // Direct open when no modal is showing
+      setEditingUser(user);
+      setIsEditMode(true);
+      setIsModalOpen(true);
+    }
   };
 
   const openAddModal = () => {
@@ -149,7 +161,12 @@ function ManageUsers() {
       {/* Modal */}
       <AddAccountModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={() => {
+          setIsModalOpen(false)
+          setEditingUser(null);
+          // console.log("editingItem", editingUser);
+          // console.log("Modal closed");
+        }}
         onAddAccount={handleAddUser}
         onEditAccount={handleEditUser}
         initialData={editingUser}
