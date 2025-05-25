@@ -3,7 +3,7 @@ import { toast } from 'react-toastify'; // Assuming you're using react-toastify 
 import HeaderManager from "../../../components/HeaderManager";
 import FoodCategoriesBar from "../../../components/FoodCategoriesBar";
 import FoodItemCarousel from "../../../components/FoodItemCarousel";
-import AddItemModal from "../../../components/AddItemModal";
+import AddItemModal from "./AddItemModal";
 import useAddFoodItem from '../../../hooks/useAddFoodItem';
 import useGetCategory from '../../../hooks/useGetCategory';
 import useGetFoodItems from '../../../hooks/useGetFoodItem';
@@ -66,7 +66,7 @@ function ManageFoodMenu() {
     };
     
     const handleAddItem = (itemData) => {
-        // console.log("Adding new item:", itemData);
+        console.log("Adding new item:", itemData);
         if(itemData){
             addNewFoodItem(itemData);
         }
