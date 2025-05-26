@@ -179,16 +179,6 @@ function LogIn() {
               </div>
             </div>
 
-            {/* Forgot Password Link */}
-            <div className="text-right mb-6">
-              <a
-                href="#"
-                className="text-sm text-red-600 hover:text-red-700 hover:underline font-medium"
-              >
-                Forgot password?
-              </a>
-            </div>
-
             {/* Login Button */}
             <button
               type="submit"
