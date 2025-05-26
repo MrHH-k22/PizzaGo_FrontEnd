@@ -184,7 +184,7 @@ function LogIn() {
               type="submit"
               className="w-full bg-red-600 hover:bg-red-700 text-white font-bold text-lg rounded-md py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition duration-150 ease-in-out"
             >
-              Đăng Nhập
+              Log in
             </button>
           </form>
 
