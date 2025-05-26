@@ -74,7 +74,7 @@ function SignUp() {
               htmlFor="name"
               className="block text-sm font-semibold text-gray-800 mb-1.5" // Bolder label
             >
-              Họ và tên <span className="text-red-500">*</span>
+              Fullname <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -213,7 +213,7 @@ function SignUp() {
             // Or use the light gray style from the image:
             // className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold text-lg rounded-md py-2.5 px-4 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 transition duration-150 ease-in-out"
           >
-            Đăng ký
+            Sign Up
           </button>
         </form>
         {/* Login Link */}
