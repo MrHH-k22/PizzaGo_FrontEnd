@@ -7,11 +7,11 @@ import useGetCart from "../../hooks/useGetCart";
 const shippingStrategies = {
   "Fast Delivery": (items, totalPrice) => {
     const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-    return totalQuantity > 6 ? totalPrice * 0.25 : totalPrice * 0.2;
+    return totalQuantity > 6 ? totalPrice * 0.2 : totalPrice * 0.15;
   },
   "Economy Delivery": (items, totalPrice) => {
     const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-    return totalQuantity > 6 ? totalPrice * 0.15 : totalPrice * 0.1;
+    return totalQuantity > 6 ? totalPrice * 0.1 : totalPrice * 0.05;
   },
   "Pick up": () => 0,
 };

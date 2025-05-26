@@ -51,7 +51,7 @@ function FoodModal({ toggleModal, selectedFood }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div
         ref={modalRef}
         className="flex flex-col md:flex-row w-[950px] max-w-[95vw] h-[650px] max-h-[90vh] mx-auto bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-300"
@@ -136,7 +136,8 @@ function FoodModal({ toggleModal, selectedFood }) {
                     </h4>
                     <div className="bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-xl border-l-4 border-red-500 shadow-sm h-auto overflow-auto">
                       <div className="flex flex-wrap gap-2">
-                        {selectedFood?.toppings && selectedFood.toppings.length > 0 ? (
+                        {selectedFood?.toppings &&
+                        selectedFood.toppings.length > 0 ? (
                           selectedFood.toppings.map((topping, index) => (
                             <span
                               key={index}
@@ -146,7 +147,9 @@ function FoodModal({ toggleModal, selectedFood }) {
                             </span>
                           ))
                         ) : (
-                          <p className="text-gray-500 italic text-sm">No toppings</p>
+                          <p className="text-gray-500 italic text-sm">
+                            No toppings
+                          </p>
                         )}
                       </div>
                     </div>
@@ -160,7 +163,8 @@ function FoodModal({ toggleModal, selectedFood }) {
                     </h4>
                     <div className="bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-xl border-l-4 border-red-500 shadow-sm h-auto overflow-auto">
                       <div className="flex flex-wrap gap-2">
-                        {selectedFood?.vegetables && selectedFood.vegetables.length > 0 ? (
+                        {selectedFood?.vegetables &&
+                        selectedFood.vegetables.length > 0 ? (
                           selectedFood.vegetables.map((vegetable, index) => (
                             <span
                               key={index}
@@ -170,7 +174,9 @@ function FoodModal({ toggleModal, selectedFood }) {
                             </span>
                           ))
                         ) : (
-                          <p className="text-gray-500 italic text-sm">No vegetables</p>
+                          <p className="text-gray-500 italic text-sm">
+                            No vegetables
+                          </p>
                         )}
                       </div>
                     </div>
@@ -204,7 +210,7 @@ function FoodModal({ toggleModal, selectedFood }) {
 
             {/* Add to Cart Button */}
             <button
-              className="flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold text-lg"
+              className="hover:cursor-pointer flex-1 bg-gradient-to-r from-red-600 to-red-700 text-white py-4 px-6 rounded-xl hover:from-red-700 hover:to-red-800 transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 font-semibold text-lg"
               onClick={handleAddToCart}
               disabled={isAddingToCart}
             >

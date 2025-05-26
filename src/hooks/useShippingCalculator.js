@@ -5,17 +5,13 @@ export function useShippingCalculator() {
   // Fast Delivery Strategy
   const calculateFastDelivery = (items, totalFoodPrice) => {
     const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-    return totalQuantity > 6
-      ? totalFoodPrice * 0.25 // 25%
-      : totalFoodPrice * 0.2; // 20%
+    return totalQuantity > 6 ? totalFoodPrice * 0.2 : totalFoodPrice * 0.15;
   };
 
   // Economy Delivery Strategy
   const calculateEconomyDelivery = (items, totalFoodPrice) => {
     const totalQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
-    return totalQuantity > 6
-      ? totalFoodPrice * 0.15 // 15%
-      : totalFoodPrice * 0.1; // 10%
+    return totalQuantity > 6 ? totalFoodPrice * 0.1 : totalFoodPrice * 0.05;
   };
 
   // Pickup Strategy
